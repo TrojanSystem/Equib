@@ -1,11 +1,14 @@
+import 'dart:math';
+
 import 'package:equib/equib_data/equip_data.dart';
+import 'package:equib/equip_input/member_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../equip_input/daily_equib_input.dart';
-
+import 'list_of_daily_collected.dart';
 
 class EquibHomePage extends StatefulWidget {
   const EquibHomePage({Key? key}) : super(key: key);
@@ -15,12 +18,12 @@ class EquibHomePage extends StatefulWidget {
 }
 
 class _EquibHomePageState extends State<EquibHomePage> {
-
-
   @override
   Widget build(BuildContext context) {
-    final getDataSource =  Provider.of<EquibData>(context).meetings;
-    print('answer $getDataSource ');
+    final getDataSource = Provider
+        .of<EquibData>(context)
+        .meetings;
+
     String? subjectText = '',
         startTimeText = '',
         endTimeText = '',
@@ -32,7 +35,15 @@ class _EquibHomePageState extends State<EquibHomePage> {
       body: SfCalendar(
         showWeekNumber: true,
         cellEndPadding: 5,
-        onTap: (details){
+        onLongPress: (val) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) =>
+                  ListOfDailyPayedMembers(collected: getDataSource),
+            ),
+          );
+        },
+        onTap: (details) {
           if (details.targetElement == CalendarElement.appointment ||
               details.targetElement == CalendarElement.agenda) {
             final Appointment appointmentDetails = details.appointments![0];
@@ -43,16 +54,31 @@ class _EquibHomePageState extends State<EquibHomePage> {
             startTimeText = DateFormat('hh:mm a')
                 .format(appointmentDetails.startTime)
                 .toString();
-            endTimeText =
-                DateFormat('hh:mm a').format(appointmentDetails.endTime).toString();
+            endTimeText = DateFormat('hh:mm a')
+                .format(appointmentDetails.endTime)
+                .toString();
             timeDetails = '$startTimeText - $endTimeText';
-
-            Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>DailyEquibInput(selectedDate:details.date!),),);
+            showModalBottomSheet(context: context,
+                builder:
+                (context) => DailyEquibInput(selectedDate: details.date!));
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (ctx) => ,
+            //   ),
+            // );
           } else if (details.targetElement == CalendarElement.calendarCell) {
             subjectText = "You have tapped cell";
-            dateText = DateFormat('MMMM dd, yyyy').format(details.date!).toString();
+            dateText =
+                DateFormat('MMMM dd, yyyy').format(details.date!).toString();
             timeDetails = '';
-            Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>DailyEquibInput(selectedDate:details.date!),),);
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (ctx) => DailyEquibInput(selectedDate: details.date!),
+            //   ),
+            // );
+            showModalBottomSheet(context: context,
+                builder:
+                    (context) => DailyEquibInput(selectedDate: details.date!));
           }
           // showDialog(
           //     context: context,
@@ -108,7 +134,50 @@ class _EquibHomePageState extends State<EquibHomePage> {
         monthViewSettings: const MonthViewSettings(
             appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: const Color.fromRGBO(40, 53, 147, 1),
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: SizedBox(
+          height: 50,
+          child: Row(
+            children: [
+              bottomBarButtons(title: 'Members', bottomBarFunction: () {}),
+              bottomBarButtons(title: 'Takers', bottomBarFunction: () {}),
+              const SizedBox(
+                width: 95,
+              ),
+              bottomBarButtons(title: 'Next', bottomBarFunction: () {}),
+              bottomBarButtons(title: 'Analysis', bottomBarFunction: () {}),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(context: context, builder: (context)=>MemberRegistration());
+          // setState(() {
+          //   Random random = Random();
+          //   // tossed = listName[random.nextInt(listName.length)];
+          //   // taker.add(tossed);
+          //   // listName.remove(tossed);
+          // });
+        },
+        child: const Icon(Icons.add),
+      ),
+
     );
   }
+
 }
 
+TextButton bottomBarButtons({required bottomBarFunction, required title}) {
+  return TextButton(
+    onPressed: bottomBarFunction,
+    child: Text(
+      title,
+      style: const TextStyle(color: Colors.white, fontSize: 15),
+    ),
+  );
+}

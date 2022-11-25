@@ -85,7 +85,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Name',
+                        'Member Name',
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
                           fontSize: 18,
@@ -98,7 +98,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                         controller: _name,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Name can\'t be empty';
+                            return 'Member Name can\'t be empty';
                           } else {
                             return null;
                           }
@@ -107,7 +107,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                           name = value!;
                         },
                         decoration: InputDecoration(
-                          hintText: 'Enter the name',
+                          hintText: 'Enter the Member name',
                           filled: true,
                           fillColor: Colors.grey[200],
                           enabledBorder: OutlineInputBorder(
@@ -203,7 +203,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                                 IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      datePicker();
+                                      datePickerForEnd();
                                     });
                                   },
                                   icon: const Icon(Icons.calendar_today),
@@ -221,12 +221,13 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                       var meets = Meeting(
-                          background: Colors.black,
-                          eventName: name,
-                          from: DateTime.parse(startTime),
-                          isAllDay: false,
-                          to: DateTime.parse(dateTime));
-                      print(meets);
+                        background: Colors.black,
+                        eventName: name,
+                        from: DateTime.parse(startTime),
+                        isAllDay: false,
+                        to: DateTime.parse(dateTime),
+                      );
+
                       Provider.of<EquibData>(context, listen: false)
                           .assigner(meets);
                       Navigator.of(context).pop();
