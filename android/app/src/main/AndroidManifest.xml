@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.equib">
    <application
-        android:label="equib"
+        android:label="እቁብ ደብተር"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
