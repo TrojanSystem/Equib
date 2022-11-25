@@ -8,35 +8,7 @@ class EquibMembers extends StatelessWidget {
    EquibMembers({Key? key}) : super(key: key);
 
 
-  List<Map<String, dynamic>> equibMembers = [
-    {
-      'price': 500,
-      'equibQuantity': 1,
-      'name': 'Suke',
-      'phoneNumber': '0912654975'
-    },
-    {
-      'price': 500,
-      'equibQuantity': 2,
-      'name': 'Dero',
-      'phoneNumber': '0912654975'
-    },{
-      'price': 500,
-      'equibQuantity': 1,
-      'name': 'Tsinat',
-      'phoneNumber': '0912654975'
-    },{
-      'price': 500,
-      'equibQuantity': 1,
-      'name': 'Sifen',
-      'phoneNumber': '0912654975'
-    },{
-      'price': 500,
-      'equibQuantity': 2,
-      'name': 'Adu',
-      'phoneNumber': '0912654975'
-    },
-  ];
+
 
   @override
   Widget build(BuildContext context) {
