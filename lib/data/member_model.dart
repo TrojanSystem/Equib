@@ -2,7 +2,7 @@ class MembersModel {
   String name;
   String phoneNumber;
   int equibQuantity;
-  String price;
+  int price;
 
   MembersModel({
     required this.name,
