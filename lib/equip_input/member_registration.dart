@@ -1,4 +1,7 @@
+import 'package:equib/equib_data/equip_data.dart';
+import 'package:equib/equib_data/equip_model_data.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MemberRegistration extends StatefulWidget {
   MemberRegistration({Key? key}) : super(key: key);
@@ -67,7 +70,8 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                         height: 5,
                       ),
                       TextFormField(
-                        controller: _member,focusNode: _memberScope,
+                        controller: _member,
+                        focusNode: _memberScope,
                         keyboardType: TextInputType.name,
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context)
@@ -116,11 +120,11 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       ),
                       TextFormField(
                         focusNode: _phoneNumberScope,
-                        controller: _member,
+                        controller: _phoneNumber,
                         keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.next,
-                        onEditingComplete: () => FocusScope.of(context)
-                            .requestFocus(_priceScope),
+                        onEditingComplete: () =>
+                            FocusScope.of(context).requestFocus(_priceScope),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Phone number can\'t be empty';
@@ -167,7 +171,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                               height: 5,
                             ),
                             TextFormField(
-                              controller: _member,
+                              controller: _price,
                               focusNode: _priceScope,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
@@ -218,11 +222,10 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                               height: 5,
                             ),
                             TextFormField(
-                              controller: _member,
+                              controller: _equipQuantity,
                               focusNode: _equipQuantityScope,
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.go,
-
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'Quantity can\'t be empty';
@@ -231,7 +234,7 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                                 }
                               },
                               onSaved: (value) {
-                                equipQuantity =int.parse( value!);
+                                equipQuantity = int.parse(value!);
                               },
                               decoration: InputDecoration(
                                 hintText: 'Enter the quantity',
@@ -252,12 +255,19 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       ),
                     ),
                   ],
-                ), GestureDetector(
+                ),
+                GestureDetector(
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
 
-
+                      final newMember = MembersModel(
+                          price: price,
+                          equibQuantity: equipQuantity,
+                          name: memberName,
+                          phoneNumber: phoneNumber);
+                      Provider.of<EquibData>(context, listen: false)
+                          .addMember(newMember);
 
                       Navigator.of(context).pop();
                     }

@@ -9,6 +9,11 @@ class EquibData extends ChangeNotifier{
     meetings.add(meet);
     notifyListeners();
   }
+  final List<MembersModel> newMember = [];
+  addMember(MembersModel member){
+    newMember.add(member);
+    notifyListeners();
+  }
 }
 
 class MeetingDataSource extends CalendarDataSource {

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../equip_input/daily_equib_input.dart';
+import 'equib_members.dart';
 import 'list_of_daily_collected.dart';
 
 class EquibHomePage extends StatefulWidget {
@@ -23,7 +24,11 @@ class _EquibHomePageState extends State<EquibHomePage> {
     final getDataSource = Provider
         .of<EquibData>(context)
         .meetings;
+    final newMember = Provider
+        .of<EquibData>(context)
+        .newMember;
 
+    print(newMember);
     String? subjectText = '',
         startTimeText = '',
         endTimeText = '',
@@ -142,7 +147,9 @@ class _EquibHomePageState extends State<EquibHomePage> {
           height: 50,
           child: Row(
             children: [
-              bottomBarButtons(title: 'Members', bottomBarFunction: () {}),
+              bottomBarButtons(title: 'Members', bottomBarFunction: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>EquibMembers()));
+              }),
               bottomBarButtons(title: 'Takers', bottomBarFunction: () {}),
               const SizedBox(
                 width: 95,
