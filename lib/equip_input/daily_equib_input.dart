@@ -70,7 +70,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+
       body: SingleChildScrollView(
         child: Form(
           key: formKey,

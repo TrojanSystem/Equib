@@ -44,244 +44,247 @@ class _MemberRegistrationState extends State<MemberRegistration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Container(
+        margin: const EdgeInsets.only(top: 25),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Member Name',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      TextFormField(
+                        controller: _member,focusNode: _memberScope,
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => FocusScope.of(context)
+                            .requestFocus(_phoneNumberScope),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Member name can\'t be empty';
+                          } else {
+                            return null;
+                          }
+                        },
+                        onSaved: (value) {
+                          memberName = value!;
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Enter the name',
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Phone Number',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      TextFormField(
+                        focusNode: _phoneNumberScope,
+                        controller: _member,
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => FocusScope.of(context)
+                            .requestFocus(_priceScope),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Phone number can\'t be empty';
+                          } else {
+                            return null;
+                          }
+                        },
+                        onSaved: (value) {
+                          phoneNumber = value!;
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Enter the name',
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
                   children: [
-                    const Text(
-                      'Member Name',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Price',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              controller: _member,
+                              focusNode: _priceScope,
+                              keyboardType: TextInputType.number,
+                              textInputAction: TextInputAction.next,
+                              onEditingComplete: () => FocusScope.of(context)
+                                  .requestFocus(_equipQuantityScope),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Price can\'t be empty';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              onSaved: (value) {
+                                price = int.parse(value!);
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Enter the Price',
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    TextFormField(
-                      controller: _member,focusNode: _memberScope,
-                      keyboardType: TextInputType.name,
-                      textInputAction: TextInputAction.next,
-                      onEditingComplete: () => FocusScope.of(context)
-                          .requestFocus(_phoneNumberScope),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Member name can\'t be empty';
-                        } else {
-                          return null;
-                        }
-                      },
-                      onSaved: (value) {
-                        memberName = value!;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Enter the name',
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Equib Quantity',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            TextFormField(
+                              controller: _member,
+                              focusNode: _equipQuantityScope,
+                              keyboardType: TextInputType.number,
+                              textInputAction: TextInputAction.go,
+
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Quantity can\'t be empty';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              onSaved: (value) {
+                                equipQuantity =int.parse( value!);
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Enter the quantity',
+                                filled: true,
+                                fillColor: Colors.grey[200],
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Phone Number',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 18,
-                      ),
+                ), GestureDetector(
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+
+
+
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(130, 10, 130, 0),
+                    width: double.infinity,
+                    height: 60.0,
+                    decoration: BoxDecoration(
+                      color: Colors.green[500],
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    TextFormField(
-                      focusNode: _phoneNumberScope,
-                      controller: _member,
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.next,
-                      onEditingComplete: () => FocusScope.of(context)
-                          .requestFocus(_priceScope),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Phone number can\'t be empty';
-                        } else {
-                          return null;
-                        }
-                      },
-                      onSaved: (value) {
-                        phoneNumber = value!;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Enter the name',
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
+                    child: const Center(
+                      child: Text(
+                        'Add Member',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Price',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          TextFormField(
-                            controller: _member,
-                            focusNode: _priceScope,
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.next,
-                            onEditingComplete: () => FocusScope.of(context)
-                                .requestFocus(_equipQuantityScope),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Price can\'t be empty';
-                              } else {
-                                return null;
-                              }
-                            },
-                            onSaved: (value) {
-                              price = int.parse(value!);
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'Enter the Price',
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ],
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Equib Quantity',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          TextFormField(
-                            controller: _member,
-                            focusNode: _equipQuantityScope,
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.go,
-
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Quantity can\'t be empty';
-                              } else {
-                                return null;
-                              }
-                            },
-                            onSaved: (value) {
-                              equipQuantity =int.parse( value!);
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'Enter the quantity',
-                              filled: true,
-                              fillColor: Colors.grey[200],
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ), GestureDetector(
-                onTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-
-
-
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(130, 10, 130, 0),
-                  width: double.infinity,
-                  height: 60.0,
-                  decoration: BoxDecoration(
-                    color: Colors.green[500],
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Add Member',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
