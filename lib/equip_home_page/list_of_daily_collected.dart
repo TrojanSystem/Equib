@@ -12,24 +12,29 @@ class ListOfDailyPayedMembers extends StatelessWidget {
   Widget build(BuildContext context) {
     final payedMembersAtSelectedDate = collected
         .where((element) =>
-            DateTime.parse(element.fromDay).isBefore(tappedDate!) && DateTime.parse(element.toDay).isAfter(tappedDate!) ||
-
-            DateTime.parse(element.fromDay) == tappedDate || DateTime.parse(element.toDay) == tappedDate)
+            DateTime.parse(element.fromDay).isBefore(tappedDate!) &&
+                DateTime.parse(element.toDay).isAfter(tappedDate!) ||
+            DateTime.parse(element.fromDay) == tappedDate ||
+            DateTime.parse(element.toDay) == tappedDate)
         .toList();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Daily Collected From'),
       ),
-      body: ListView.builder(
-          itemCount: payedMembersAtSelectedDate.length,
-          itemBuilder: (context, index) {
-            return CollectedFrom(
-                from: payedMembersAtSelectedDate[index].fromDay,
-                to: payedMembersAtSelectedDate[index].toDay,
-                eventName: payedMembersAtSelectedDate[index].event,
-                totalPayed: payedMembersAtSelectedDate[index].totalPayed);
-          }),
+      body: payedMembersAtSelectedDate.isEmpty
+          ? Center(
+              child: Image.asset('images/no-cash.png'),
+            )
+          : ListView.builder(
+              itemCount: payedMembersAtSelectedDate.length,
+              itemBuilder: (context, index) {
+                return CollectedFrom(
+                    from: payedMembersAtSelectedDate[index].fromDay,
+                    to: payedMembersAtSelectedDate[index].toDay,
+                    eventName: payedMembersAtSelectedDate[index].event,
+                    totalPayed: payedMembersAtSelectedDate[index].totalPayed);
+              }),
     );
   }
 }
