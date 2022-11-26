@@ -68,18 +68,27 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
   }
 
   String dropdownvalue = 'Suke';
-
+double penalityBirr = 50.0;
 // List of items in our dropdown menu
 
   @override
   Widget build(BuildContext context) {
     final newMember = Provider.of<EquibData>(context).newMemberList;
+    final dailyCollected =
+        Provider.of<EquipDailyCollected>(context).dailyCollectedList;
     List<String> listMember = newMember.map((e) => e.name).toList();
     final equipPrice =
         newMember.where((element) => element.name == dropdownvalue).toList();
     final priceAmount = equipPrice.first.price;
     final equipQuantity = equipPrice.first.equibQuantity;
-    
+    final dailyPayedMember = dailyCollected
+        .where((element) => element.event == dropdownvalue)
+        .toList();
+
+        dailyPayedMember.sort((a, b) => a.toDay.compareTo(b.toDay));
+
+  final penalityInDays = DateTime.parse(dailyPayedMember.last.toDay).difference(widget.selectedDate).inDays;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -157,7 +166,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                           onChanged: (String? value) {
                             setState(() {
                               dropdownvalue = value!;
-                              print(dropdownvalue);
+
                             });
                           },
                           // After selecting the desired option,it will
@@ -268,8 +277,10 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                           .difference(DateTime.parse(startTime))
                           .inDays;
                       final day = (dayDiffrence + 1).toString();
-                    double  dailyPayedAmount = double.parse(day) * double.parse(priceAmount) *  double.parse(equipQuantity);
-                     
+                      double dailyPayedAmount = double.parse(day) *
+                          double.parse(priceAmount) *
+                          double.parse(equipQuantity);
+
                       var meets = Meeting(
                         event: dropdownvalue,
                         fromDay: startTime,
