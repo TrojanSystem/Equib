@@ -3,25 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'equib_data/equip_data.dart';
-import 'equip_home_page/home_page.dart';
 
 void main() {
   return runApp(
-    MaterialApp(
+    const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:  AdaBread(),
-
+      home: Equip(),
     ),
   );
 }
-class AdaBread extends StatefulWidget {
 
+class Equip extends StatefulWidget {
+  const Equip({super.key});
 
   @override
-  State<AdaBread> createState() => _AdaBreadState();
+  State<Equip> createState() => _EquipState();
 }
 
-class _AdaBreadState extends State<AdaBread> {
+class _EquipState extends State<Equip> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -29,7 +28,6 @@ class _AdaBreadState extends State<AdaBread> {
         ChangeNotifierProvider(
           create: (ctx) => EquibData(),
         ),
-
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

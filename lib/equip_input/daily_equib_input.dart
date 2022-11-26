@@ -67,10 +67,21 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
     super.dispose();
   }
 
+  String dropdownvalue = 'Suke';
+
+// List of items in our dropdown menu
+  var items = [
+    'Suke',
+    'Dero',
+    'Tsinat',
+    'Sifen',
+    'Adu',
+  ];
+
   @override
   Widget build(BuildContext context) {
+    final newMember = Provider.of<EquibData>(context).newMember;
     return Scaffold(
-
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
@@ -79,49 +90,82 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
             height: MediaQuery.of(context).size.height * 0.6,
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Member Name',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 18,
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(35, 8, 35, 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Member Name',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey[200],
+                              ),
+                              width: 200,
+                              height: 60,
+                              child: Text(
+                                dropdownvalue,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      TextFormField(
-                        controller: _name,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Member Name can\'t be empty';
-                          } else {
-                            return null;
-                          }
-                        },
-                        onSaved: (value) {
-                          name = value!;
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Enter the Member name',
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButton(
+                          // Initial Value
+                          value: dropdownvalue,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 15),
+                          // Down Arrow Icon
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.white,
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+
+                          // Array list of items
+                          items: items.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(
+                                items,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              dropdownvalue = value!;
+                            });
+                          },
+                          // After selecting the desired option,it will
+                          // change button value to selected value
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -222,7 +266,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                       formKey.currentState!.save();
                       var meets = Meeting(
                         background: Colors.black,
-                        eventName: name,
+                        eventName: dropdownvalue,
                         from: DateTime.parse(startTime),
                         isAllDay: false,
                         to: DateTime.parse(dateTime),

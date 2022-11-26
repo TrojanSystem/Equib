@@ -28,7 +28,6 @@ class _EquibHomePageState extends State<EquibHomePage> {
         .of<EquibData>(context)
         .newMember;
 
-    print(newMember);
     String? subjectText = '',
         startTimeText = '',
         endTimeText = '',
