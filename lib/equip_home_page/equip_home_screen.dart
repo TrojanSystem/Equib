@@ -21,13 +21,18 @@ class EquibHomePage extends StatefulWidget {
 class _EquibHomePageState extends State<EquibHomePage> {
   @override
   Widget build(BuildContext context) {
-    final getDataSource = Provider
-        .of<EquibData>(context)
-        .meetings;
-    final newMember = Provider
-        .of<EquibData>(context)
-        .newMember;
+    final getDataSource = Provider.of<EquibData>(context).meetings;
 
+    final newMember = Provider.of<EquibData>(context).newMemberList;
+    final meeting = Provider.of<EquipDailyCollected>(context).dailyCollectedList;
+    print('meeting $meeting');
+    getDataSource
+        .map(
+          (e) => print(
+            (DateTime.parse(e.toDay).difference(DateTime.parse(e.fromDay)).inDays),
+          ),
+        )
+        .toList();
     String? subjectText = '',
         startTimeText = '',
         endTimeText = '',
@@ -35,7 +40,38 @@ class _EquibHomePageState extends State<EquibHomePage> {
         timeDetails = '';
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Total Members: ${newMember.length}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8.0, 0, 8, 8),
+                child: Text(
+                  'Cash Collected: ${newMember.length}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+        toolbarHeight: 90,
+        elevation: 0,
+      ),
       body: SfCalendar(
         showWeekNumber: true,
         cellEndPadding: 5,
@@ -48,84 +84,86 @@ class _EquibHomePageState extends State<EquibHomePage> {
           );
         },
         onTap: (details) {
-          if (details.targetElement == CalendarElement.appointment ||
-              details.targetElement == CalendarElement.agenda) {
-            final Appointment appointmentDetails = details.appointments![0];
-            subjectText = appointmentDetails.subject;
-            dateText = DateFormat('MMMM dd, yyyy')
-                .format(appointmentDetails.startTime)
-                .toString();
-            startTimeText = DateFormat('hh:mm a')
-                .format(appointmentDetails.startTime)
-                .toString();
-            endTimeText = DateFormat('hh:mm a')
-                .format(appointmentDetails.endTime)
-                .toString();
-            timeDetails = '$startTimeText - $endTimeText';
-            showModalBottomSheet(context: context,
-                builder:
-                (context) => DailyEquibInput(selectedDate: details.date!));
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (ctx) => ,
-            //   ),
-            // );
-          } else if (details.targetElement == CalendarElement.calendarCell) {
-            subjectText = "You have tapped cell";
-            dateText =
-                DateFormat('MMMM dd, yyyy').format(details.date!).toString();
-            timeDetails = '';
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (ctx) => DailyEquibInput(selectedDate: details.date!),
-            //   ),
-            // );
-            showModalBottomSheet(context: context,
-                builder:
-                    (context) => DailyEquibInput(selectedDate: details.date!));
+          if (newMember.isNotEmpty) {
+            if (details.targetElement == CalendarElement.appointment ||
+                details.targetElement == CalendarElement.agenda) {
+              final Appointment appointmentDetails = details.appointments![0];
+              subjectText = appointmentDetails.subject;
+              dateText = DateFormat('MMMM dd, yyyy')
+                  .format(appointmentDetails.startTime)
+                  .toString();
+              startTimeText = DateFormat('hh:mm a')
+                  .format(appointmentDetails.startTime)
+                  .toString();
+              endTimeText = DateFormat('hh:mm a')
+                  .format(appointmentDetails.endTime)
+                  .toString();
+              timeDetails = '$startTimeText - $endTimeText';
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) =>
+                      DailyEquibInput(selectedDate: details.date!));
+            } else if (details.targetElement == CalendarElement.calendarCell) {
+              subjectText = "You have tapped cell";
+              dateText =
+                  DateFormat('MMMM dd, yyyy').format(details.date!).toString();
+              timeDetails = '';
+
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (ctx) => DailyEquibInput(selectedDate: details.date!),
+              //   ),
+              // );
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) =>
+                      DailyEquibInput(selectedDate: details.date!));
+            }
+            // showDialog(
+            //     context: context,
+            //     builder: (BuildContext context) {
+            //       return AlertDialog(
+            //         title: Text('$subjectText'),
+            //         content: SizedBox(
+            //           height: 80,
+            //           child: Column(
+            //             children: <Widget>[
+            //               Row(
+            //                 children: <Widget>[
+            //                   Text(
+            //                     '$dateText',
+            //                     style: const TextStyle(
+            //                       fontWeight: FontWeight.w400,
+            //                       fontSize: 20,
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //               SizedBox(
+            //                 height: 40,
+            //                 child: Row(
+            //                   children: <Widget>[
+            //                     Text(timeDetails!,
+            //                         style: const TextStyle(
+            //                             fontWeight: FontWeight.w400, fontSize: 15)),
+            //                   ],
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //         actions: <Widget>[
+            //           ElevatedButton(
+            //               onPressed: () {
+            //                 Navigator.of(context).pop();
+            //               },
+            //               child: const Text('Close'))
+            //         ],
+            //       );
+            //     });
+          } else {
+            return;
           }
-          // showDialog(
-          //     context: context,
-          //     builder: (BuildContext context) {
-          //       return AlertDialog(
-          //         title: Text('$subjectText'),
-          //         content: SizedBox(
-          //           height: 80,
-          //           child: Column(
-          //             children: <Widget>[
-          //               Row(
-          //                 children: <Widget>[
-          //                   Text(
-          //                     '$dateText',
-          //                     style: const TextStyle(
-          //                       fontWeight: FontWeight.w400,
-          //                       fontSize: 20,
-          //                     ),
-          //                   ),
-          //                 ],
-          //               ),
-          //               SizedBox(
-          //                 height: 40,
-          //                 child: Row(
-          //                   children: <Widget>[
-          //                     Text(timeDetails!,
-          //                         style: const TextStyle(
-          //                             fontWeight: FontWeight.w400, fontSize: 15)),
-          //                   ],
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //         actions: <Widget>[
-          //           ElevatedButton(
-          //               onPressed: () {
-          //                 Navigator.of(context).pop();
-          //               },
-          //               child: const Text('Close'))
-          //         ],
-          //       );
-          //     });
         },
         showNavigationArrow: true,
         cellBorderColor: Colors.white,
@@ -146,9 +184,12 @@ class _EquibHomePageState extends State<EquibHomePage> {
           height: 50,
           child: Row(
             children: [
-              bottomBarButtons(title: 'Members', bottomBarFunction: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>EquibMembers()));
-              }),
+              bottomBarButtons(
+                  title: 'Members',
+                  bottomBarFunction: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (ctx) => EquibMembers()));
+                  }),
               bottomBarButtons(title: 'Takers', bottomBarFunction: () {}),
               const SizedBox(
                 width: 95,
@@ -162,7 +203,8 @@ class _EquibHomePageState extends State<EquibHomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showModalBottomSheet(context: context, builder: (context)=>MemberRegistration());
+          showModalBottomSheet(
+              context: context, builder: (context) => MemberRegistration());
           // setState(() {
           //   Random random = Random();
           //   // tossed = listName[random.nextInt(listName.length)];
@@ -172,10 +214,8 @@ class _EquibHomePageState extends State<EquibHomePage> {
         },
         child: const Icon(Icons.add),
       ),
-
     );
   }
-
 }
 
 TextButton bottomBarButtons({required bottomBarFunction, required title}) {

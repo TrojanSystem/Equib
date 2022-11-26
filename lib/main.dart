@@ -1,3 +1,4 @@
+import 'package:equib/equib_data/equip_daily_collected_database.dart';
 import 'package:equib/equip_home_page/equip_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,8 +27,10 @@ class _EquipState extends State<Equip> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => EquibData(),
+          create: (ctx) => EquibData()..loadNewMemberList(),
         ),
+        ChangeNotifierProvider(
+            create: (ctx) => EquipDailyCollected()..loadDailyCollectedList()),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

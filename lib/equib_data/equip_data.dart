@@ -1,19 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import 'equip_daily_collected_database.dart';
 import 'equip_model_data.dart';
+import 'equip_database.dart';
 
-class EquibData extends ChangeNotifier{
+class EquibData extends ChangeNotifier {
+  DatabaseExpense db = DatabaseExpense();
+
+  bool isIncome = false;
+
+  bool _isLoading = true;
+
+  bool get isLoading => _isLoading;
+  List<MembersModel> _newMemberList = [];
+
+  List<MembersModel> get newMemberList => _newMemberList;
+
+  void updaterChanger(bool state) {
+    isIncome = state;
+    //  notifyListeners();
+  }
+
+  Future loadNewMemberList() async {
+    _isLoading = true;
+    notifyListeners();
+    _newMemberList = await db.getTasks();
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future addNewMemberList(MembersModel task) async {
+    await db.insertTask(task);
+    await loadNewMemberList();
+    notifyListeners();
+  }
+
+  Future updateNewMemberList(MembersModel task) async {
+    await db.updateTaskList(task);
+    await loadNewMemberList();
+    notifyListeners();
+  }
+
+  Future deleteNewMemberList(int task) async {
+    await db.deleteTask(task);
+    await loadNewMemberList();
+    notifyListeners();
+  }
+
   final List<Meeting> meetings = [];
-  assigner(Meeting meet){
+
+  assigner(Meeting meet) {
     meetings.add(meet);
     notifyListeners();
   }
+
   final List<MembersModel> newMember = [];
-  addMember(MembersModel member){
+
+  addMember(MembersModel member) {
     newMember.add(member);
     notifyListeners();
   }
+
   List daysOfMonth = [
     {
       'mon': 'Day 1',
@@ -190,7 +238,42 @@ class EquibData extends ChangeNotifier{
       'days': 12,
     },
   ];
+}
 
+class EquipDailyCollected extends ChangeNotifier {
+  DailyEquipCollectedDatabase dailyCollectedDb = DailyEquipCollectedDatabase();
+  bool _isLoading = true;
+  List<Meeting> _dailyCollected = [];
+
+  List<Meeting> get dailyCollectedList => _dailyCollected;
+
+  bool get isLoading => _isLoading;
+
+  Future loadDailyCollectedList() async {
+    _isLoading = true;
+    notifyListeners();
+    _dailyCollected = await dailyCollectedDb.getTasks();
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future addDailyCollectedList(Meeting task) async {
+    await dailyCollectedDb.insertTask(task);
+    await loadDailyCollectedList();
+    notifyListeners();
+  }
+
+  Future updateDailyCollectedList(Meeting task) async {
+    await dailyCollectedDb.updateTaskList(task);
+    await loadDailyCollectedList();
+    notifyListeners();
+  }
+
+  Future deleteDailyCollectedList(int task) async {
+    await dailyCollectedDb.deleteTask(task);
+    await loadDailyCollectedList();
+    notifyListeners();
+  }
 }
 
 class MeetingDataSource extends CalendarDataSource {
@@ -202,27 +285,27 @@ class MeetingDataSource extends CalendarDataSource {
 
   @override
   DateTime getStartTime(int index) {
-    return _getMeetingData(index).from;
+    return DateTime.parse(_getMeetingData(index).fromDay);
   }
 
   @override
   DateTime getEndTime(int index) {
-    return _getMeetingData(index).to;
+    return DateTime.parse(_getMeetingData(index).toDay);
   }
 
   @override
   String getSubject(int index) {
-    return _getMeetingData(index).eventName;
+    return _getMeetingData(index).event;
   }
 
   @override
   Color getColor(int index) {
-    return _getMeetingData(index).background;
+    return Colors.blue;
   }
 
   @override
   bool isAllDay(int index) {
-    return _getMeetingData(index).isAllDay;
+    return false;
   }
 
   Meeting _getMeetingData(int index) {

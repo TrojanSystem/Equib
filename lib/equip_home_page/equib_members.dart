@@ -21,8 +21,8 @@ class EquibMembers extends StatelessWidget {
           itemCount: newMembers.length,
           itemBuilder: (context, index) {
             return MembersListDetail(
-              price: newMembers[index].price,
-              equibQuantity: newMembers[index].equibQuantity,
+              price: int.parse(newMembers[index].price),
+              equibQuantity: int.parse(newMembers[index].equibQuantity),
               name: newMembers[index].name,
               phoneNumber: newMembers[index].phoneNumber,
             );

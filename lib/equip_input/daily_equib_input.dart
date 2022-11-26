@@ -70,17 +70,20 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
   String dropdownvalue = 'Suke';
 
 // List of items in our dropdown menu
-  var items = [
-    'Suke',
-    'Dero',
-    'Tsinat',
-    'Sifen',
-    'Adu',
-  ];
 
   @override
   Widget build(BuildContext context) {
+    var items = [
+      'Suke',
+      'Dero',
+      'Tsinat',
+      'Sifen',
+      'Adu',
+    ];
     final newMember = Provider.of<EquibData>(context).newMember;
+    newMember.map(
+      (e) => items.insert(0, e.name),
+    );
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -265,15 +268,15 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                       var meets = Meeting(
-                        background: Colors.black,
-                        eventName: dropdownvalue,
-                        from: DateTime.parse(startTime),
-                        isAllDay: false,
-                        to: DateTime.parse(dateTime),
+                        event: dropdownvalue,
+                        fromDay: startTime,
+                        toDay: dateTime,
                       );
 
                       Provider.of<EquibData>(context, listen: false)
                           .assigner(meets);
+                      Provider.of<EquipDailyCollected>(context, listen: false)
+                          .addDailyCollectedList(meets);
                       Navigator.of(context).pop();
                     }
                   },
