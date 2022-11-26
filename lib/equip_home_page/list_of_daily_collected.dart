@@ -2,75 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ListOfDailyPayedMembers extends StatelessWidget {
-  ListOfDailyPayedMembers({required this.collected});
-  List collected;
-  List<Map<String, dynamic>> equibMembers = [
-    {
-      'price': 500,
-      'equibQuantity': 1,
-      'name': 'Suke',
-      'phoneNumber': '0912654975'
-    },
-    {
-      'price': 500,
-      'equibQuantity': 2,
-      'name': 'Dero',
-      'phoneNumber': '0912654975'
-    },{
-      'price': 500,
-      'equibQuantity': 1,
-      'name': 'Tsinat',
-      'phoneNumber': '0912654975'
-    },{
-      'price': 500,
-      'equibQuantity': 1,
-      'name': 'Sifen',
-      'phoneNumber': '0912654975'
-    },{
-      'price': 500,
-      'equibQuantity': 2,
-      'name': 'Adu',
-      'phoneNumber': '0912654975'
-    },
-  ];
+  const ListOfDailyPayedMembers(
+      {super.key, required this.tappedDate, required this.collected});
+
+  final List collected;
+  final DateTime? tappedDate;
 
   @override
   Widget build(BuildContext context) {
+    final payedMembersAtSelectedDate = collected
+        .where((element) =>
+            DateTime.parse(element.fromDay).isBefore(tappedDate!) && DateTime.parse(element.toDay).isAfter(tappedDate!) ||
+
+            DateTime.parse(element.fromDay) == tappedDate || DateTime.parse(element.toDay) == tappedDate)
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Daily Collected From'),
       ),
       body: ListView.builder(
-          itemCount: collected.length,
+          itemCount: payedMembersAtSelectedDate.length,
           itemBuilder: (context, index) {
             return CollectedFrom(
-              from:  collected[index].from,
-              to: collected[index].to,
-
-              eventName: collected[index].eventName,
-            );
+                from: payedMembersAtSelectedDate[index].fromDay,
+                to: payedMembersAtSelectedDate[index].toDay,
+                eventName: payedMembersAtSelectedDate[index].event,
+                totalPayed: payedMembersAtSelectedDate[index].totalPayed);
           }),
     );
   }
 }
 
 class MembersListDetail extends StatelessWidget {
-  MembersListDetail(
-      {required this.phoneNumber,
+  const MembersListDetail(
+      {super.key,
+      required this.phoneNumber,
       required this.equibQuantity,
       required this.price,
       required this.name});
 
-  String name;
-  String phoneNumber;
-  int equibQuantity;
-  int price;
+  final String name;
+  final String phoneNumber;
+  final int equibQuantity;
+  final int price;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       height: 100,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -103,10 +83,10 @@ class MembersListDetail extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text(
+                  const Text(
                     'ETB',
                   ),
                 ],
@@ -165,22 +145,27 @@ class MembersListDetail extends StatelessWidget {
     );
   }
 }
+
 class CollectedFrom extends StatelessWidget {
-  CollectedFrom(
-      {required this.from,
-        required this.to,
+  const CollectedFrom(
+      {super.key,
+      required this.from,
+      required this.totalPayed,
+      required this.to,
+      required this.eventName});
 
-        required this.eventName});
-
-  DateTime from;
-  String eventName;
-  DateTime to;
-
+  final String from;
+  final String eventName;
+  final String to;
+  final String totalPayed;
 
   @override
   Widget build(BuildContext context) {
+    final dayDifference =
+        DateTime.parse(to).difference(DateTime.parse(from)).inDays;
+    final total = (dayDifference + 1).toString();
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       height: 100,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -197,6 +182,7 @@ class CollectedFrom extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(
+            flex: 2,
             child: Container(
               margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -205,18 +191,18 @@ class CollectedFrom extends StatelessWidget {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text(
-                    'price',
-                    style: TextStyle(
+                    totalPayed.toString(),
+                    style: const TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 18,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text(
+                  const Text(
                     'ETB',
                   ),
                 ],
@@ -224,7 +210,7 @@ class CollectedFrom extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 4,
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -234,15 +220,54 @@ class CollectedFrom extends StatelessWidget {
               ),
               child: ListTile(
                 title: Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
+                  padding: const EdgeInsets.only(bottom: 12.0),
                   child: Text(
                     eventName,
                   ),
                 ),
-                subtitle: Text(
-                  DateFormat.yMMMEd().format(
-                    from,
-                  ),
+                subtitle: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RichText(
+                      text: TextSpan(children: [
+                        const TextSpan(
+                          text: 'From: ',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: DateFormat.yMMMEd().format(
+                            DateTime.parse(
+                              from.toString(),
+                            ),
+                          ),
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                      ]),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    RichText(
+                      text: TextSpan(children: [
+                        const TextSpan(
+                          text: 'To: ',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: DateFormat.yMMMEd().format(
+                            DateTime.parse(
+                              to.toString(),
+                            ),
+                          ),
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                      ]),
+                    ),
+                  ],
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -257,7 +282,7 @@ class CollectedFrom extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Quantity',
+                      total,
                       style: TextStyle(
                         color: Colors.green[800],
                         fontFamily: 'FjallaOne',

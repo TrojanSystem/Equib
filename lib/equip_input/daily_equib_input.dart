@@ -73,17 +73,13 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
 
   @override
   Widget build(BuildContext context) {
-    var items = [
-      'Suke',
-      'Dero',
-      'Tsinat',
-      'Sifen',
-      'Adu',
-    ];
-    final newMember = Provider.of<EquibData>(context).newMember;
-    newMember.map(
-      (e) => items.insert(0, e.name),
-    );
+    final newMember = Provider.of<EquibData>(context).newMemberList;
+    List<String> listMember = newMember.map((e) => e.name).toList();
+    final equipPrice =
+        newMember.where((element) => element.name == dropdownvalue).toList();
+    final priceAmount = equipPrice.first.price;
+    final equipQuantity = equipPrice.first.equibQuantity;
+    
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -149,7 +145,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                           ),
 
                           // Array list of items
-                          items: items.map((String items) {
+                          items: listMember.map((String items) {
                             return DropdownMenuItem(
                               value: items,
                               child: Text(
@@ -161,6 +157,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                           onChanged: (String? value) {
                             setState(() {
                               dropdownvalue = value!;
+                              print(dropdownvalue);
                             });
                           },
                           // After selecting the desired option,it will
@@ -267,10 +264,17 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                   onTap: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
+                      final dayDiffrence = DateTime.parse(dateTime)
+                          .difference(DateTime.parse(startTime))
+                          .inDays;
+                      final day = (dayDiffrence + 1).toString();
+                    double  dailyPayedAmount = double.parse(day) * double.parse(priceAmount) *  double.parse(equipQuantity);
+                     
                       var meets = Meeting(
                         event: dropdownvalue,
                         fromDay: startTime,
                         toDay: dateTime,
+                        totalPayed: dailyPayedAmount.toStringAsFixed(2),
                       );
 
                       Provider.of<EquibData>(context, listen: false)

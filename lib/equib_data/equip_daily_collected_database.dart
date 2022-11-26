@@ -8,7 +8,7 @@ class DailyEquipCollectedDatabase {
       join(await getDatabasesPath(), 'dailyEquibCollected.db'),
       onCreate: (db, version) async {
         await db.execute(
-          '''CREATE TABLE dailyEquibCollected(id INTEGER PRIMARY KEY, event TEXT, price TEXT, fromDay TEXT, toDay TEXT)''',
+          '''CREATE TABLE dailyEquibCollected(id INTEGER PRIMARY KEY, event TEXT,totalPayed TEXT, price TEXT, fromDay TEXT, toDay TEXT)''',
         );
       },
       version: 1,
@@ -17,7 +17,7 @@ class DailyEquipCollectedDatabase {
 
   Future<int> insertTask(Meeting task) async {
     Database db = await database();
-    int data = await db.insert('dailyEquibCollected', task.toMap());
+    int data = await db.insert('dailyEquibCollected', task.toMap(),);
     return data;
   }
 
@@ -41,6 +41,7 @@ class DailyEquipCollectedDatabase {
     );
     return rows > 0;
   }
+
 
   Future<void> deleteTask(int id) async {
     Database _db = await database();

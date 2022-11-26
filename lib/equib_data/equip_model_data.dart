@@ -43,6 +43,7 @@ class Meeting {
     required this.event,
     required this.fromDay,
     required this.toDay,
+    required this.totalPayed,
   });
 
   Map<String, dynamic> toMap() {
@@ -50,6 +51,7 @@ class Meeting {
       'event': event,
       'fromDay': fromDay,
       'toDay': toDay,
+      'totalPayed': totalPayed
     };
   }
 
@@ -58,10 +60,13 @@ class Meeting {
       event: map['event'],
       fromDay: map['fromDay'],
       toDay: map['toDay'],
+      totalPayed: map['totalPayed'],
 
       // checked: map['checked'],
     );
   }
+
+  String totalPayed;
 
   /// Event name which is equivalent to subject property of [Appointment].
   String event;

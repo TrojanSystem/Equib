@@ -19,12 +19,19 @@ class EquibHomePage extends StatefulWidget {
 }
 
 class _EquibHomePageState extends State<EquibHomePage> {
+  DateTime tappedDate=DateTime.now();
   @override
   Widget build(BuildContext context) {
     final newMember = Provider.of<EquibData>(context).newMemberList;
     final getDataSource =
         Provider.of<EquipDailyCollected>(context).dailyCollectedList;
 
+    final sumDailyCashCollected =
+        getDataSource.map((e) => e.totalPayed).toList();
+    double cashCollected = 0.0;
+    for (int cash = 0; cash < sumDailyCashCollected.length; cash++) {
+      cashCollected += double.parse(sumDailyCashCollected[cash]);
+    }
 
     String? subjectText = '',
         startTimeText = '',
@@ -52,7 +59,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 0, 8, 8),
                 child: Text(
-                  'Cash Collected: ${newMember.length}',
+                  'Cash Collected: ${cashCollected}',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -72,11 +79,12 @@ class _EquibHomePageState extends State<EquibHomePage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (ctx) =>
-                  ListOfDailyPayedMembers(collected: getDataSource),
+                  ListOfDailyPayedMembers(collected: getDataSource,tappedDate:val.date),
             ),
           );
         },
         onTap: (details) {
+
           if (newMember.isNotEmpty) {
             if (details.targetElement == CalendarElement.appointment ||
                 details.targetElement == CalendarElement.agenda) {
@@ -92,11 +100,13 @@ class _EquibHomePageState extends State<EquibHomePage> {
                   .format(appointmentDetails.endTime)
                   .toString();
               timeDetails = '$startTimeText - $endTimeText';
+              tappedDate=details.date!;
               showModalBottomSheet(
                   context: context,
                   builder: (context) =>
                       DailyEquibInput(selectedDate: details.date!));
             } else if (details.targetElement == CalendarElement.calendarCell) {
+              tappedDate=details.date!;
               subjectText = "You have tapped cell";
               dateText =
                   DateFormat('MMMM dd, yyyy').format(details.date!).toString();
