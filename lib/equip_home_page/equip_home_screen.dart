@@ -21,18 +21,11 @@ class EquibHomePage extends StatefulWidget {
 class _EquibHomePageState extends State<EquibHomePage> {
   @override
   Widget build(BuildContext context) {
-    final getDataSource = Provider.of<EquibData>(context).meetings;
-
     final newMember = Provider.of<EquibData>(context).newMemberList;
-    final meeting = Provider.of<EquipDailyCollected>(context).dailyCollectedList;
-    print('meeting $meeting');
-    getDataSource
-        .map(
-          (e) => print(
-            (DateTime.parse(e.toDay).difference(DateTime.parse(e.fromDay)).inDays),
-          ),
-        )
-        .toList();
+    final getDataSource =
+        Provider.of<EquipDailyCollected>(context).dailyCollectedList;
+
+
     String? subjectText = '',
         startTimeText = '',
         endTimeText = '',

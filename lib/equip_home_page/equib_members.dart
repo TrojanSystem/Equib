@@ -12,7 +12,7 @@ class EquibMembers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final newMembers = Provider.of<EquibData>(context).newMember;
+    final newMembers = Provider.of<EquibData>(context).newMemberList;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Equib Members'),
