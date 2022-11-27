@@ -37,6 +37,44 @@ class MembersModel {
   }
 }
 
+class TakerModel {
+  String member;
+  bool isWin;
+  String amount;
+  String round;
+  String day;
+
+  TakerModel({
+    required this.day,
+    required this.member,
+    required this.amount,
+    this.isWin = false,
+    required this.round,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'member': member,
+      'isWin': isWin == true ? 1 : 0,
+      'amount': amount,
+      'day': day,
+      'round': round
+    };
+  }
+
+  static TakerModel fromMap(Map<String, dynamic> map) {
+    return TakerModel(
+      member: map['member'],
+      isWin: map['isWin'] == 1 ? true : false,
+      amount: map['amount'],
+      day: map['day'],
+      round: map['round'],
+
+      // checked: map['checked'],
+    );
+  }
+}
+
 class Meeting {
   /// Creates a meeting class with required details.
   Meeting({
