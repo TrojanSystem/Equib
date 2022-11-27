@@ -261,11 +261,12 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
 
-                      // final newMember = MembersModel(
-                      //     price: price,
-                      //     equibQuantity: equipQuantity,
-                      //     name: memberName,
-                      //     phoneNumber: phoneNumber);
+                      final newTaker = TakerModel(
+                          member: memberName,
+                          amount: '15000',
+                          day: DateTime.now().toString(),
+                          round: '5',
+                          isWin: false);
                       final newMembers = MembersModel(
                           price: price.toString(),
                           equibQuantity: equipQuantity.toString(),
@@ -275,6 +276,8 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                       //     .addMember(newMember);
                       Provider.of<EquibData>(context, listen: false)
                           .addNewMemberList(newMembers);
+                      Provider.of<Takers>(context, listen: false)
+                          .addTakerList(newTaker);
                       Navigator.of(context).pop();
                     }
                   },

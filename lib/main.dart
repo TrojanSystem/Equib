@@ -30,7 +30,11 @@ class _EquipState extends State<Equip> {
           create: (ctx) => EquibData()..loadNewMemberList(),
         ),
         ChangeNotifierProvider(
-            create: (ctx) => EquipDailyCollected()..loadDailyCollectedList()),
+          create: (ctx) => EquipDailyCollected()..loadDailyCollectedList(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Takers()..loadTakerList(),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

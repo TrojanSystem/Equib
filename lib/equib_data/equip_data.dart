@@ -275,7 +275,90 @@ class EquipDailyCollected extends ChangeNotifier {
     notifyListeners();
   }
 }
+/*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+* */
 
+
+
+class Takers extends ChangeNotifier {
+  DatabaseTaker takerDb = DatabaseTaker();
+  bool _isLoading = true;
+  List<TakerModel> _takerList = [];
+
+  List<TakerModel> get takerList => _takerList;
+
+  bool get isLoading => _isLoading;
+
+  Future loadTakerList() async {
+    _isLoading = true;
+    notifyListeners();
+    _takerList = await takerDb.getTasks();
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future addTakerList(TakerModel task) async {
+    await takerDb.insertTask(task);
+    await loadTakerList();
+    notifyListeners();
+  }
+
+  Future updateTakerList(TakerModel task) async {
+    await takerDb.updateTaskList(task);
+    await loadTakerList();
+    notifyListeners();
+  }
+
+  Future deleteTakerList(String task) async {
+    await takerDb.deleteTask(task);
+    await loadTakerList();
+    notifyListeners();
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
 class MeetingDataSource extends CalendarDataSource {
   /// Creates a meeting data source, which used to set the appointment
   /// collection to the calendar

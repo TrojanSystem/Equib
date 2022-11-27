@@ -48,4 +48,74 @@ class DatabaseExpense {
   }
 }
 
+/*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+* */
 
+class DatabaseTaker {
+  Future<Database> database() async {
+    return openDatabase(
+      join(await getDatabasesPath(), 'takerList.db'),
+      onCreate: (db, version) async {
+        await db.execute(
+          '''CREATE TABLE takerList(id INTEGER PRIMARY KEY, member TEXT, amount TEXT,isWin int, round TEXT, day TEXT)''',
+        );
+      },
+      version: 1,
+    );
+  }
+
+  Future<int> insertTask(TakerModel task) async {
+    Database db = await database();
+    int data = await db.insert('takerList', task.toMap());
+    return data;
+  }
+
+  Future<List<TakerModel>> getTasks() async {
+    Database db = await database();
+    var tasks = await db.query('takerList');
+    List<TakerModel> tasksList = tasks.isNotEmpty
+        ? tasks.map((e) => TakerModel.fromMap(e)).toList()
+        : [];
+    return tasksList;
+  }
+
+  Future<bool> updateTaskList(TakerModel item) async {
+    final Database db = await database();
+    final rows = await db.update(
+      'takerList',
+      item.toMap(),
+      where: 'member = ?',
+      whereArgs: [item.member],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    return rows > 0;
+  }
+
+  Future<void> deleteTask(String id) async {
+    Database _db = await database();
+    await _db.rawDelete("DELETE FROM takerList WHERE member = '$id'");
+  }
+}

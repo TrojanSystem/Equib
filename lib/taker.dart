@@ -39,10 +39,11 @@ class _TakerState extends State<Taker> {
   @override
   Widget build(BuildContext context) {
     final newMember = Provider.of<EquibData>(context).newMemberList;
+    final newTaker = Provider.of<Takers>(context).takerList;
     final List<String> memberList = newMember.map((e) => e.name).toList();
 
     //final memberList =['Suke','Dero','Tsinat','Adu'];
-
+print(newTaker);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
