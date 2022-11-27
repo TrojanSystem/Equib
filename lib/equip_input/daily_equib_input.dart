@@ -166,7 +166,6 @@ double penalityBirr = 50.0;
                           onChanged: (String? value) {
                             setState(() {
                               dropdownvalue = value!;
-
                             });
                           },
                           // After selecting the desired option,it will

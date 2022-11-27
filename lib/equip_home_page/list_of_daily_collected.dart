@@ -24,7 +24,14 @@ class ListOfDailyPayedMembers extends StatelessWidget {
       ),
       body: payedMembersAtSelectedDate.isEmpty
           ? Center(
-              child: Image.asset('images/no-cash.png'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset('images/no-cash.png'),
+                  const Text('No cash collected!'),
+                ],
+              ),
             )
           : ListView.builder(
               itemCount: payedMembersAtSelectedDate.length,

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:equib/equib_data/equip_data.dart';
 import 'package:equib/equip_input/member_registration.dart';
+import 'package:equib/taker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,8 @@ class EquibHomePage extends StatefulWidget {
 }
 
 class _EquibHomePageState extends State<EquibHomePage> {
-  DateTime tappedDate=DateTime.now();
+  DateTime tappedDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     final newMember = Provider.of<EquibData>(context).newMemberList;
@@ -78,13 +80,12 @@ class _EquibHomePageState extends State<EquibHomePage> {
         onLongPress: (val) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (ctx) =>
-                  ListOfDailyPayedMembers(collected: getDataSource,tappedDate:val.date),
+              builder: (ctx) => ListOfDailyPayedMembers(
+                  collected: getDataSource, tappedDate: val.date),
             ),
           );
         },
         onTap: (details) {
-
           if (newMember.isNotEmpty) {
             if (details.targetElement == CalendarElement.appointment ||
                 details.targetElement == CalendarElement.agenda) {
@@ -100,13 +101,13 @@ class _EquibHomePageState extends State<EquibHomePage> {
                   .format(appointmentDetails.endTime)
                   .toString();
               timeDetails = '$startTimeText - $endTimeText';
-              tappedDate=details.date!;
+              tappedDate = details.date!;
               showModalBottomSheet(
                   context: context,
                   builder: (context) =>
                       DailyEquibInput(selectedDate: details.date!));
             } else if (details.targetElement == CalendarElement.calendarCell) {
-              tappedDate=details.date!;
+              tappedDate = details.date!;
               subjectText = "You have tapped cell";
               dateText =
                   DateFormat('MMMM dd, yyyy').format(details.date!).toString();
@@ -191,9 +192,20 @@ class _EquibHomePageState extends State<EquibHomePage> {
                   title: 'Members',
                   bottomBarFunction: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => EquibMembers()));
+                      MaterialPageRoute(
+                        builder: (ctx) => EquibMembers(),
+                      ),
+                    );
                   }),
-              bottomBarButtons(title: 'Takers', bottomBarFunction: () {}),
+              bottomBarButtons(
+                  title: 'Takers',
+                  bottomBarFunction: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => Taker(),
+                      ),
+                    );
+                  }),
               const SizedBox(
                 width: 95,
               ),

@@ -8,11 +8,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Title'),
+        title: const Text('Title'),
       ),
       body: Center(
           child: TextButton(
-        child: Text('Calender'),
+        child: const Text('Calender'),
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (ctx) => EquibHomePage()));
