@@ -86,8 +86,8 @@ double penalityBirr = 50.0;
         .toList();
 
         dailyPayedMember.sort((a, b) => a.toDay.compareTo(b.toDay));
-
-  final penalityInDays = DateTime.parse(dailyPayedMember.last.toDay).difference(widget.selectedDate).inDays;
+//penality Calculation
+  //final penalityInDays = DateTime.parse(dailyPayedMember.last.toDay).difference(widget.selectedDate).inDays;
 
     return Scaffold(
       body: SingleChildScrollView(

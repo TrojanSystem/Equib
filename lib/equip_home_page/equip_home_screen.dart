@@ -61,7 +61,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 0, 8, 8),
                 child: Text(
-                  'Cash Collected: ${cashCollected}',
+                  'Cash Collected: $cashCollected',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -77,6 +77,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
       body: SfCalendar(
         showWeekNumber: true,
         cellEndPadding: 5,
+        firstDayOfWeek: 1,
         onLongPress: (val) {
           Navigator.of(context).push(
             MaterialPageRoute(

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:equib/equib_data/equip_model_data.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,8 @@ class _TakerState extends State<Taker> {
       'round': 'Round 6'
     },
   ];
-  List<String> listName = ['Dero', 'Suke', 'Tsinat', 'Adu', 'Sifen'];
+
+  //['Dero', 'Suke', 'Tsinat', 'Adu', 'Sifen'];
 
   List<String> taker = [];
 
@@ -40,10 +42,11 @@ class _TakerState extends State<Taker> {
   Widget build(BuildContext context) {
     final newMember = Provider.of<EquibData>(context).newMemberList;
     final newTaker = Provider.of<Takers>(context).takerList;
-    final List<String> memberList = newMember.map((e) => e.name).toList();
+    final readyForTossingMemebrs =
+        newTaker.where((element) => element.isWin == false).toList();
+    List<String> listName =
+        readyForTossingMemebrs.map((e) => e.member).toList();
 
-    //final memberList =['Suke','Dero','Tsinat','Adu'];
-print(newTaker);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -79,21 +82,48 @@ print(newTaker);
                     direction: FlipDirection.VERTICAL,
                     speed: 1000,
                     onFlipDone: (status) {
-
-
                       setState(() {
+                        int count = 0;
                         if (status == true) {
-                          setState(() {
-                            Random random = Random();
-                            tossed = listName[random.nextInt(listName.length)];
-                            taker.add(tossed);
-                            listName.remove(tossed);
-                          });
+                          if (readyForTossingMemebrs.isNotEmpty) {
 
-                          print('taker $taker');
-                          print('member $listName');
+                            setState(() {
+                              count++;
+                              Random random = Random();
+                              tossed =
+                                  listName[random.nextInt(listName.length)];
+
+                              final winner = readyForTossingMemebrs
+                                  .where((element) => element.member == tossed)
+                                  .toList();
+                              final task = TakerModel(
+                                  day: winner.first.day,
+                                  member: winner.first.member,
+                                  amount: winner.first.amount,
+                                  round: count.toString(),
+                                  isWin: true);
+                              Provider.of<Takers>(context, listen: false)
+                                  .updateTakerList(task);
+                            });
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('እቁብ'),
+                                content: const Text('Congratulation!'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                         } else {
-                          print(status);
+                          return;
                         }
                       });
                     },
@@ -162,8 +192,8 @@ print(newTaker);
                           columnWidths: const {
                             0: FlexColumnWidth(4),
                             1: FlexColumnWidth(2),
-                            2: FlexColumnWidth(2),
-                            3: FlexColumnWidth(2),
+                            2: FlexColumnWidth(3),
+                            3: FlexColumnWidth(3),
                           },
                           children: const [
                             TableRow(
@@ -218,16 +248,16 @@ print(newTaker);
                           columnWidths: const {
                             0: FlexColumnWidth(4),
                             1: FlexColumnWidth(2),
-                            2: FlexColumnWidth(2),
-                            3: FlexColumnWidth(2),
+                            2: FlexColumnWidth(3),
+                            3: FlexColumnWidth(3),
                           },
-                          children: newMember
+                          children: newTaker
                               .map(
                                 (e) => buildTableRowsForTaker(
-                                  member: e.name,
-                                  status: e.price,
-                                  amount: e.phoneNumber,
-                                  round: e.equibQuantity,
+                                  member: e.member,
+                                  status: e.isWin,
+                                  amount: e.amount,
+                                  round: e.round,
                                 ),
                               )
                               .toList(),
@@ -246,7 +276,7 @@ print(newTaker);
 
   TableRow buildTableRowsForTaker(
       {required String member,
-      required String status,
+      required bool status,
       required String amount,
       required String round}) {
     return TableRow(
@@ -261,7 +291,7 @@ print(newTaker);
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            status,
+            status ? 'ወሳጅ' : 'ጠባቂ',
             style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
           ),
         ),
@@ -275,7 +305,7 @@ print(newTaker);
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            round,
+            'Round #$round',
             style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
           ),
         ),
