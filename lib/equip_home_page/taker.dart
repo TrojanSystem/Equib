@@ -1,50 +1,34 @@
 import 'dart:math';
 
+import 'package:equib/constants.dart';
 import 'package:equib/equib_data/equip_model_data.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-import 'equib_data/equip_data.dart';
+import '../equib_data/equip_data.dart';
 
 class Taker extends StatefulWidget {
-  Taker({required this.takerID});
+  const Taker({super.key, required this.takerID, required this.newTakerss});
 
-  String takerID;
+  final String takerID;
+
+  final List<TakerModel> newTakerss;
 
   @override
   State<Taker> createState() => _TakerState();
 }
 
 class _TakerState extends State<Taker> {
-  final List<Map<String, dynamic>> takerList = [
-    {'member': 'Suke', 'status': 'ጠባቂ', 'amount': '15000', 'round': 'Round 6'},
-    {'member': 'Adu', 'status': 'ጠባቂ', 'amount': '15000', 'round': 'Round 6'},
-    {
-      'member': 'Tsinat',
-      'status': 'ወሳጅ',
-      'amount': '15000',
-      'round': 'Round 6'
-    },
-    {
-      'member': 'Suke Mother',
-      'status': 'ጠባቂ',
-      'amount': '15000',
-      'round': 'Round 6'
-    },
-  ];
-
-  //['Dero', 'Suke', 'Tsinat', 'Adu', 'Sifen'];
-
-  List<String> taker = [];
-
   String tossed = '';
 
   @override
   Widget build(BuildContext context) {
-    final newMember = Provider.of<EquibData>(context).newMemberList;
-    final newTaker = Provider.of<Takers>(context).takerList;
+    final newTakerChecker = Provider.of<Takers>(context).takerList;
+    final newTaker = newTakerChecker
+        .where((element) => element.takersID == widget.takerID)
+        .toList();
     final readyForTossingMemebrs =
         newTaker.where((element) => element.isWin == false).toList();
     List<String> listName =
@@ -86,11 +70,9 @@ class _TakerState extends State<Taker> {
                     speed: 1000,
                     onFlipDone: (status) {
                       setState(() {
-                        int count = 0;
                         if (status == true) {
                           if (readyForTossingMemebrs.isNotEmpty) {
                             setState(() {
-                              count++;
                               Random random = Random();
                               tossed =
                                   listName[random.nextInt(listName.length)];
@@ -98,18 +80,25 @@ class _TakerState extends State<Taker> {
                               final winner = readyForTossingMemebrs
                                   .where((element) => element.member == tossed)
                                   .toList();
-
+                              final round =
+                                  Provider.of<Takers>(context, listen: false)
+                                      .equipRound;
                               final task = TakerModel(
                                 day: winner.first.day,
                                 member: winner.first.member,
                                 amount: winner.first.amount,
-                                round: count.toString(),
+                                round: round.toString(),
                                 isWin: true,
                                 takersID: widget.takerID,
                               );
                               Provider.of<Takers>(context, listen: false)
                                   .updateTakerList(task);
+                              Provider.of<Takers>(context, listen: false)
+                                  .changeRound(round);
                             });
+                          } else if (readyForTossingMemebrs.isEmpty &&
+                              newTaker.isEmpty) {
+                            return;
                           } else {
                             showDialog(
                               context: context,
@@ -119,7 +108,10 @@ class _TakerState extends State<Taker> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Lottie.asset('images/congratulations.json'),
-                                    const Text('Congratulation!'),
+                                    const Text(
+                                      'Congratulation!',
+                                      style: emptyStyle,
+                                    ),
                                   ],
                                 ),
                                 actions: [
@@ -195,85 +187,100 @@ class _TakerState extends State<Taker> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0, right: 12),
-                    child: Column(
-                      children: [
-                        Table(
-                          columnWidths: const {
-                            0: FlexColumnWidth(4),
-                            1: FlexColumnWidth(2),
-                            2: FlexColumnWidth(3),
-                            3: FlexColumnWidth(3),
-                          },
-                          children: const [
-                            TableRow(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Member",
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Status",
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Amount",
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Round",
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0, right: 12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Table(
+                              columnWidths: const {
+                                0: FlexColumnWidth(4),
+                                1: FlexColumnWidth(2),
+                                2: FlexColumnWidth(3),
+                                3: FlexColumnWidth(3),
+                              },
+                              children: const [
+                                TableRow(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Member",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Status",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Amount",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Round",
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          color: Colors.grey, width: 2),
+                                    ),
                                   ),
                                 ),
                               ],
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom:
-                                      BorderSide(color: Colors.grey, width: 2),
-                                ),
-                              ),
                             ),
-                          ],
-                        ),
-                        Table(
-                          columnWidths: const {
-                            0: FlexColumnWidth(4),
-                            1: FlexColumnWidth(2),
-                            2: FlexColumnWidth(3),
-                            3: FlexColumnWidth(3),
-                          },
-                          children: newTaker
-                              .map(
-                                (e) => buildTableRowsForTaker(
-                                  member: e.member,
-                                  status: e.isWin,
-                                  amount: e.amount,
-                                  round: e.round,
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ],
+                          ),
+                          Expanded(
+                            flex: 10,
+                            child: newTaker.isEmpty
+                                ? const Center(
+                                    child: Text(
+                                      'No registered members! ',
+                                      style: emptyStyle,
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    itemCount: newTaker.length,
+                                    itemBuilder: (context, index) {
+                                      return Table(columnWidths: const {
+                                        0: FlexColumnWidth(4),
+                                        1: FlexColumnWidth(2),
+                                        2: FlexColumnWidth(3),
+                                        3: FlexColumnWidth(3),
+                                      }, children: [
+                                        buildTableRowsForTaker(
+                                          member: newTaker[index].member,
+                                          status: newTaker[index].isWin,
+                                          amount: newTaker[index].amount,
+                                          round: newTaker[index].round,
+                                        ),
+                                      ]);
+                                    },
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -316,7 +323,7 @@ class _TakerState extends State<Taker> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            'Round #$round',
+            status ? 'Round #$round' : '',
             style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
           ),
         ),

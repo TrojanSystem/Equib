@@ -5,7 +5,7 @@ import 'package:equib/equip_input/equip_debter_starter.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../list_of_equip_debter.dart';
+import 'list_of_equip_debter.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -111,7 +111,7 @@ class HomePage extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (ctx) => EquipDebterStarter(),
+                              builder: (ctx) => const EquipDebterStarter(),
                             ),
                           );
                         },
@@ -140,7 +140,7 @@ class HomePage extends StatelessWidget {
                   bottom: 15,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (ctx) => const ListOfEquipDebter(),
                         ),

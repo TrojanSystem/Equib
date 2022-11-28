@@ -8,7 +8,7 @@ class DatabaseExpense {
       join(await getDatabasesPath(), 'memberList.db'),
       onCreate: (db, version) async {
         await db.execute(
-          '''CREATE TABLE memberList(id INTEGER PRIMARY KEY, name TEXT, price TEXT, phoneNumber TEXT, equibQuantity TEXT)''',
+          '''CREATE TABLE memberList(id INTEGER PRIMARY KEY, name TEXT,memberID TEXT, price TEXT, phoneNumber TEXT, equibQuantity TEXT)''',
         );
       },
       version: 1,
@@ -80,7 +80,7 @@ class DatabaseTaker {
       join(await getDatabasesPath(), 'takerList.db'),
       onCreate: (db, version) async {
         await db.execute(
-          '''CREATE TABLE takerList(id INTEGER PRIMARY KEY, member TEXT, amount TEXT,isWin int, round TEXT, day TEXT)''',
+          '''CREATE TABLE takerList(id INTEGER PRIMARY KEY, member TEXT,takersID TEXT, amount TEXT,isWin int, round TEXT, day TEXT)''',
         );
       },
       version: 1,

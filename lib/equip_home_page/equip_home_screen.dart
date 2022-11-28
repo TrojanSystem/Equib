@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:equib/equib_data/equip_data.dart';
 import 'package:equib/equip_input/member_registration.dart';
-import 'package:equib/taker.dart';
+import 'package:equib/equip_home_page/taker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +13,10 @@ import 'equib_members.dart';
 import 'list_of_daily_collected.dart';
 
 class EquibHomePage extends StatefulWidget {
-   const EquibHomePage({required this.equipID});
-final String equipID;
+  const EquibHomePage({super.key, required this.equipID});
+
+  final String equipID;
+
   @override
   State<EquibHomePage> createState() => _EquibHomePageState();
 }
@@ -24,9 +26,19 @@ class _EquibHomePageState extends State<EquibHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final newMember = Provider.of<EquibData>(context).newMemberList;
-    final getDataSource =
+    final newTakerChecker = Provider.of<Takers>(context).takerList;
+    final newTaker = newTakerChecker
+        .where((element) => element.takersID == widget.equipID)
+        .toList();
+    final newMemebrChecker = Provider.of<EquibData>(context).newMemberList;
+    final newMember = newMemebrChecker
+        .where((element) => element.memberID == widget.equipID)
+        .toList();
+    final newGetDataSource =
         Provider.of<EquipDailyCollected>(context).dailyCollectedList;
+    final getDataSource = newGetDataSource
+        .where((element) => element.meetingID == widget.equipID)
+        .toList();
 
     final sumDailyCashCollected =
         getDataSource.map((e) => e.totalPayed).toList();
@@ -105,8 +117,10 @@ class _EquibHomePageState extends State<EquibHomePage> {
               tappedDate = details.date!;
               showModalBottomSheet(
                   context: context,
-                  builder: (context) =>
-                      DailyEquibInput(selectedDate: details.date!));
+                  builder: (context) => DailyEquibInput(
+                        selectedDate: details.date!,
+                        dailyInputID: widget.equipID,
+                      ));
             } else if (details.targetElement == CalendarElement.calendarCell) {
               tappedDate = details.date!;
               subjectText = "You have tapped cell";
@@ -120,9 +134,12 @@ class _EquibHomePageState extends State<EquibHomePage> {
               //   ),
               // );
               showModalBottomSheet(
-                  context: context,
-                  builder: (context) =>
-                      DailyEquibInput(selectedDate: details.date!));
+                context: context,
+                builder: (context) => DailyEquibInput(
+                  selectedDate: details.date!,
+                  dailyInputID: widget.equipID,
+                ),
+              );
             }
             // showDialog(
             //     context: context,
@@ -194,7 +211,8 @@ class _EquibHomePageState extends State<EquibHomePage> {
                   bottomBarFunction: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => EquibMembers(membersID:widget.equipID),
+                        builder: (ctx) => EquibMembers(
+                            membersID: widget.equipID, newMembers: newMember),
                       ),
                     );
                   }),
@@ -203,7 +221,8 @@ class _EquibHomePageState extends State<EquibHomePage> {
                   bottomBarFunction: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => Taker(takerID:widget.equipID),
+                        builder: (ctx) =>
+                            Taker(takerID: widget.equipID, newTakerss:  newTaker),
                       ),
                     );
                   }),
@@ -220,7 +239,11 @@ class _EquibHomePageState extends State<EquibHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-              context: context, builder: (context) => MemberRegistration());
+            context: context,
+            builder: (context) => MemberRegistration(
+              memberRegisterID: widget.equipID,
+            ),
+          );
           // setState(() {
           //   Random random = Random();
           //   // tossed = listName[random.nextInt(listName.length)];

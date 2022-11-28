@@ -354,6 +354,7 @@ class EquipStarterClass extends ChangeNotifier {
 
 
 class Takers extends ChangeNotifier {
+  int equipRound = 1;
   DatabaseTaker takerDb = DatabaseTaker();
   bool _isLoading = true;
   List<TakerModel> _takerList = [];
@@ -361,7 +362,10 @@ class Takers extends ChangeNotifier {
   List<TakerModel> get takerList => _takerList;
 
   bool get isLoading => _isLoading;
-
+changeRound(int count){
+  equipRound = equipRound+1;
+  notifyListeners();
+}
   Future loadTakerList() async {
     _isLoading = true;
     notifyListeners();

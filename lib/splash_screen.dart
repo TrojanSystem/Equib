@@ -1,12 +1,7 @@
 import 'dart:async';
-
-
 import 'package:flutter/material.dart';
-
+import 'constants.dart';
 import 'equip_home_page/home_page.dart';
-import 'equip_input/equip_debter_starter.dart';
-
-
 
 class MyCustomSplashScreen extends StatefulWidget {
   const MyCustomSplashScreen({Key? key}) : super(key: key);
@@ -57,7 +52,12 @@ class _MyCustomSplashScreenState extends State<MyCustomSplashScreen>
 
     Timer(const Duration(seconds: 4), () {
       setState(() {
-        Navigator.pushReplacement(context, PageTransition(const SecondPage()));
+        Navigator.pushReplacement(
+          context,
+          PageTransition(
+            const SecondPage(),
+          ),
+        );
       });
     });
   }
@@ -70,8 +70,8 @@ class _MyCustomSplashScreenState extends State<MyCustomSplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(3, 83, 151, 1),
@@ -82,7 +82,7 @@ class _MyCustomSplashScreenState extends State<MyCustomSplashScreen>
               AnimatedContainer(
                   duration: const Duration(milliseconds: 2000),
                   curve: Curves.fastLinearToSlowEaseIn,
-                  height: _height / _fontSize),
+                  height: height / _fontSize),
               AnimatedOpacity(
                 duration: const Duration(milliseconds: 1000),
                 opacity: _textOpacity,
@@ -110,8 +110,8 @@ class _MyCustomSplashScreenState extends State<MyCustomSplashScreen>
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 2000),
                     curve: Curves.fastLinearToSlowEaseIn,
-                    height: _width / _containerSize,
-                    width: _width / _containerSize,
+                    height: width / _containerSize,
+                    width: width / _containerSize,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -130,7 +130,7 @@ class _MyCustomSplashScreenState extends State<MyCustomSplashScreen>
                     child: Center(
                       child: Text(
                         'We Solve Problems Technology Creates',
-
+                        style: sloganStyle,
                       ),
                     ),
                   ),
@@ -141,7 +141,7 @@ class _MyCustomSplashScreenState extends State<MyCustomSplashScreen>
                     padding: EdgeInsets.only(left: 8.0),
                     child: Text(
                       'version: 1.0.0+1',
-
+                      style: sloganStyle,
                     ),
                   ),
                 ],

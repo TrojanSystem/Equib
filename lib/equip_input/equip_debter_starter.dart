@@ -83,6 +83,7 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: Theme.of(context).iconTheme,
         backgroundColor: Colors.white,
         toolbarHeight: 90,
         elevation: 0,

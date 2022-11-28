@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MemberRegistration extends StatefulWidget {
-  MemberRegistration({Key? key}) : super(key: key);
+  const MemberRegistration({super.key, required this.memberRegisterID});
+
+  final String memberRegisterID;
 
   @override
   State<MemberRegistration> createState() => _MemberRegistrationState();
@@ -46,6 +48,15 @@ class _MemberRegistrationState extends State<MemberRegistration> {
 
   @override
   Widget build(BuildContext context) {
+    final List starterPrize =
+        Provider.of<EquipStarterClass>(context, listen: false)
+            .equipStarterList;
+    final grandPrizeList = starterPrize
+        .where((element) =>
+    element.equipId == widget.memberRegisterID)
+        .toList();
+    final grandPrize = grandPrizeList.map((e) => e).toList();
+
     return Scaffold(
       body: Container(
         margin: const EdgeInsets.only(top: 25),
@@ -261,13 +272,18 @@ class _MemberRegistrationState extends State<MemberRegistration> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
 
+                      final int round =
+                          Provider.of<Takers>(context, listen: false)
+                              .equipRound;
                       final newTaker = TakerModel(
+                          takersID: widget.memberRegisterID,
                           member: memberName,
-                          amount: '15000',
+                          amount: (grandPrize.first.grandPrize).toString(),
                           day: DateTime.now().toString(),
-                          round: '5',
+                          round: round.toString(),
                           isWin: false);
                       final newMembers = MembersModel(
+                          memberID: widget.memberRegisterID,
                           price: price.toString(),
                           equibQuantity: equipQuantity.toString(),
                           name: memberName,

@@ -3,7 +3,8 @@ import 'package:equib/equip_home_page/equip_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'equip_home_page/list_of_daily_collected.dart';
+import '../constants.dart';
+
 
 class ListOfEquipDebter extends StatelessWidget {
   const ListOfEquipDebter({Key? key}) : super(key: key);
@@ -14,8 +15,18 @@ class ListOfEquipDebter extends StatelessWidget {
         Provider.of<EquipStarterClass>(context).equipStarterList;
     return Scaffold(
       appBar: AppBar(
+        iconTheme: Theme.of(context).iconTheme,
+        backgroundColor: Colors.white,
+        toolbarHeight: 90,
         elevation: 0,
-        title: const Text('እቁብ ደብተር'),
+        title: Text(
+          'እቁብ ደብተር',
+          style: TextStyle(
+            color: Colors.blue[800],
+            fontWeight: FontWeight.w900,
+            fontSize: 25,
+          ),
+        ),
         centerTitle: true,
       ),
       body: listOfEquipDebter.isEmpty
@@ -24,8 +35,8 @@ class ListOfEquipDebter extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('images/no-cash.png'),
-                  const Text('No cash collected!'),
+                  Image.asset('images/no-money.png',width: 200,),
+                  const Text('የተጀመረ እቁብ የለም!',style: emptyStyle,),
                 ],
               ),
             )
