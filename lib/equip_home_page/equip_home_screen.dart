@@ -1,5 +1,3 @@
-
-
 import 'package:equib/equib_data/equip_data.dart';
 import 'package:equib/equip_input/member_registration.dart';
 import 'package:equib/equip_home_page/taker.dart';
@@ -33,6 +31,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
     final newMember = newMemebrChecker
         .where((element) => element.memberID == widget.equipID)
         .toList();
+    List<String> listMember = newMember.map((e) => e.name).toList();
     final newGetDataSource =
         Provider.of<EquipDailyCollected>(context).dailyCollectedList;
     final getDataSource = newGetDataSource
@@ -45,8 +44,6 @@ class _EquibHomePageState extends State<EquibHomePage> {
     for (int cash = 0; cash < sumDailyCashCollected.length; cash++) {
       cashCollected += double.parse(sumDailyCashCollected[cash]);
     }
-
-
 
     return Scaffold(
       appBar: AppBar(
@@ -97,13 +94,13 @@ class _EquibHomePageState extends State<EquibHomePage> {
           if (newMember.isNotEmpty) {
             if (details.targetElement == CalendarElement.appointment ||
                 details.targetElement == CalendarElement.agenda) {
-
               tappedDate = details.date!;
               showModalBottomSheet(
                   context: context,
                   builder: (context) => DailyEquibInput(
                         selectedDate: details.date!,
                         dailyInputID: widget.equipID,
+                        dropValue: listMember.first,
                       ));
             } else if (details.targetElement == CalendarElement.calendarCell) {
               tappedDate = details.date!;
@@ -113,10 +110,10 @@ class _EquibHomePageState extends State<EquibHomePage> {
                 builder: (context) => DailyEquibInput(
                   selectedDate: details.date!,
                   dailyInputID: widget.equipID,
+                  dropValue: listMember.first,
                 ),
               );
             }
-
           } else {
             return;
           }
@@ -152,8 +149,8 @@ class _EquibHomePageState extends State<EquibHomePage> {
                   bottomBarFunction: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) =>
-                            Taker(takerID: widget.equipID, newTakerss:  newTaker),
+                        builder: (ctx) => Taker(
+                            takerID: widget.equipID, newTakerss: newTaker),
                       ),
                     );
                   }),
@@ -175,7 +172,6 @@ class _EquibHomePageState extends State<EquibHomePage> {
               memberRegisterID: widget.equipID,
             ),
           );
-
         },
         child: const Icon(Icons.add),
       ),

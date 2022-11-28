@@ -6,10 +6,16 @@ import 'package:provider/provider.dart';
 import '../equib_data/equip_model_data.dart';
 
 class DailyEquibInput extends StatefulWidget {
- const DailyEquibInput({super.key, required this.selectedDate,required this.dailyInputID});
+  const DailyEquibInput(
+      {super.key,
+      required this.selectedDate,
+      required this.dailyInputID,
+      required this.dropValue});
 
- final DateTime selectedDate;
+  final String dropValue;
+  final DateTime selectedDate;
   final String dailyInputID;
+
   @override
   State<DailyEquibInput> createState() => _DailyEquibInputState();
 }
@@ -20,13 +26,14 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
   final FocusNode _nameFocus = FocusNode();
   String name = '';
   late String startTime;
-
+  late String dropdownvalue;
   String dateTime = DateTime.now().toString();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    dropdownvalue = widget.dropValue;
     startTime = widget.selectedDate.toString();
   }
 
@@ -67,27 +74,35 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
     super.dispose();
   }
 
-  String dropdownvalue = 'Suke';
-double penaltyBirr = 50.0;
+  double penaltyBirr = 50.0;
+
 // List of items in our dropdown menu
 
   @override
   Widget build(BuildContext context) {
-    final newMember = Provider.of<EquibData>(context).newMemberList;
-    final dailyCollected =
+    final newMemebrChecker = Provider.of<EquibData>(context).newMemberList;
+    final newMember = newMemebrChecker
+        .where((element) => element.memberID == widget.dailyInputID)
+        .toList();
+
+    final dailyCollectedChecker =
         Provider.of<EquipDailyCollected>(context).dailyCollectedList;
+    final dailyCollected = dailyCollectedChecker
+        .where((element) => element.meetingID == widget.dailyInputID)
+        .toList();
     List<String> listMember = newMember.map((e) => e.name).toList();
+
     final equipPrice =
         newMember.where((element) => element.name == dropdownvalue).toList();
-    final priceAmount = equipPrice.first.price;
-    final equipQuantity = equipPrice.first.equibQuantity;
+    final priceAmount = equipPrice.last.price;
+    final equipQuantity = equipPrice.last.equibQuantity;
     final dailyPayedMember = dailyCollected
         .where((element) => element.event == dropdownvalue)
         .toList();
 
-        dailyPayedMember.sort((a, b) => a.toDay.compareTo(b.toDay));
+    dailyPayedMember.sort((a, b) => a.toDay.compareTo(b.toDay));
 //penalty Calculation
-  //final penaltyInDays = DateTime.parse(dailyPayedMember.last.toDay).difference(widget.selectedDate).inDays;
+    //final penaltyInDays = DateTime.parse(dailyPayedMember.last.toDay).difference(widget.selectedDate).inDays;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -277,8 +292,12 @@ double penaltyBirr = 50.0;
                           .inDays;
                       final day = (dayDiffrence + 1).toString();
                       double dailyPayedAmount = double.parse(day) *
-                          double.parse(priceAmount) *
-                          double.parse(equipQuantity);
+                          (priceAmount.isEmpty
+                              ? 0
+                              : double.parse(priceAmount)) *
+                          (equipQuantity.isEmpty
+                              ? 0
+                              : double.parse(equipQuantity));
 
                       var meets = Meeting(
                         meetingID: widget.dailyInputID,
@@ -286,8 +305,8 @@ double penaltyBirr = 50.0;
                         fromDay: startTime,
                         toDay: dateTime,
                         totalPayed: dailyPayedAmount.toStringAsFixed(2),
+                        //'',
                       );
-
 
                       Provider.of<EquipDailyCollected>(context, listen: false)
                           .addDailyCollectedList(meets);
