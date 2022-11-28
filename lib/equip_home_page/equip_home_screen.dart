@@ -2,6 +2,7 @@ import 'package:equib/equib_data/equip_data.dart';
 import 'package:equib/equip_input/member_registration.dart';
 import 'package:equib/equip_home_page/taker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -20,7 +21,7 @@ class EquibHomePage extends StatefulWidget {
 
 class _EquibHomePageState extends State<EquibHomePage> {
   DateTime tappedDate = DateTime.now();
-
+final NumberFormat _number = NumberFormat();
   @override
   Widget build(BuildContext context) {
     final newTakerChecker = Provider.of<Takers>(context).takerList;
@@ -65,7 +66,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 0, 8, 8),
                 child: Text(
-                  'Cash Collected: $cashCollected',
+                  'Cash Collected: ${_number.format(cashCollected)}',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
