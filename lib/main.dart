@@ -1,8 +1,8 @@
 import 'package:equib/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'equib_data/equip_data.dart';
+
 
 void main() {
   return runApp(

@@ -140,7 +140,7 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                         _members.text = value!;
                       },
                       decoration: InputDecoration(
-                        hintText: 'Enter the member number',
+                        hintText: 'የአባላት ብዛት',
                         filled: true,
                         fillColor: Colors.grey[200],
                         enabledBorder: OutlineInputBorder(
@@ -197,7 +197,7 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                               _equipPrice.text = value!;
                             },
                             decoration: InputDecoration(
-                              hintText: 'Enter the Price',
+                              hintText: 'መጠን',
                               filled: true,
                               fillColor: Colors.grey[200],
                               enabledBorder: OutlineInputBorder(
@@ -251,7 +251,7 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                               _winEvery.text = value!;
                             },
                             decoration: InputDecoration(
-                              hintText: 'Enter the quantity',
+                              hintText: 'ቀን',
                               filled: true,
                               fillColor: Colors.grey[200],
                               enabledBorder: OutlineInputBorder(
