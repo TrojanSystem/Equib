@@ -75,6 +75,52 @@ class TakerModel {
   }
 }
 
+class EquipStarterModel {
+  String equipId;
+  String member;
+  String grandPrize;
+  String amount;
+  String length;
+  String recurrence;
+  String day;
+
+  EquipStarterModel({
+    required this.day,
+    required this.member,
+    required this.amount,
+    required this.recurrence,
+    required this.length,
+    required this.equipId,
+    required this.grandPrize,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'grandPrize': grandPrize,
+      'equipId': equipId,
+      'length': length,
+      'member': member,
+      'amount': amount,
+      'day': day,
+      'recurrence': recurrence
+    };
+  }
+
+  static EquipStarterModel fromMap(Map<String, dynamic> map) {
+    return EquipStarterModel(
+        member: map['member'],
+        grandPrize: map['grandPrize'],
+        amount: map['amount'],
+        day: map['day'],
+        equipId: map['equipId'],
+        length: map['length'],
+        recurrence: map['recurrence']
+
+        // checked: map['checked'],
+        );
+  }
+}
+
 class Meeting {
   /// Creates a meeting class with required details.
   Meeting({

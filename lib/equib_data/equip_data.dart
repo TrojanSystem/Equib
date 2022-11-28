@@ -239,7 +239,18 @@ class EquibData extends ChangeNotifier {
     },
   ];
 }
-
+/*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+* */
 class EquipDailyCollected extends ChangeNotifier {
   DailyEquipCollectedDatabase dailyCollectedDb = DailyEquipCollectedDatabase();
   bool _isLoading = true;
@@ -272,6 +283,57 @@ class EquipDailyCollected extends ChangeNotifier {
   Future deleteDailyCollectedList(int task) async {
     await dailyCollectedDb.deleteTask(task);
     await loadDailyCollectedList();
+    notifyListeners();
+  }
+}
+
+/*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+* */
+class EquipStarterClass extends ChangeNotifier {
+  DatabaseEquipStarter equipStarterDb = DatabaseEquipStarter();
+  bool _isLoading = true;
+  List<EquipStarterModel> _equipStarterList = [];
+
+  List<EquipStarterModel> get equipStarterList => _equipStarterList;
+
+  bool get isLoading => _isLoading;
+
+  Future loadEquipStarterList() async {
+    _isLoading = true;
+    notifyListeners();
+    _equipStarterList = await equipStarterDb.getTasks();
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future addEquipStarterList(EquipStarterModel task) async {
+    await equipStarterDb.insertTask(task);
+    await loadEquipStarterList();
+    notifyListeners();
+  }
+
+  Future updateEquipStarterList(EquipStarterModel task) async {
+    await equipStarterDb.updateTaskList(task);
+    await loadEquipStarterList();
+    notifyListeners();
+  }
+
+  Future deleteEquipStarterList(String task) async {
+    await equipStarterDb.deleteTask(task);
+    await loadEquipStarterList();
     notifyListeners();
   }
 }

@@ -34,6 +34,9 @@ class _EquipState extends State<Equip> {
         ChangeNotifierProvider(
           create: (ctx) => Takers()..loadTakerList(),
         ),
+        ChangeNotifierProvider(
+          create: (ctx) => EquipStarterClass()..loadEquipStarterList(),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

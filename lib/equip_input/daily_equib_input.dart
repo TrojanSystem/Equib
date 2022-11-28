@@ -287,8 +287,7 @@ double penalityBirr = 50.0;
                         totalPayed: dailyPayedAmount.toStringAsFixed(2),
                       );
 
-                      Provider.of<EquibData>(context, listen: false)
-                          .assigner(meets);
+
                       Provider.of<EquipDailyCollected>(context, listen: false)
                           .addDailyCollectedList(meets);
                       Navigator.of(context).pop();

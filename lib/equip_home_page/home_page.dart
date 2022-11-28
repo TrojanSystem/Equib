@@ -5,6 +5,8 @@ import 'package:equib/equip_input/equip_debter_starter.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import '../list_of_equip_debter.dart';
+
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
   final colorizeColors = [
@@ -140,7 +142,7 @@ class HomePage extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (ctx) => const EquibHomePage(),
+                          builder: (ctx) => const ListOfEquipDebter(),
                         ),
                       );
                     },

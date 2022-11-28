@@ -1,5 +1,9 @@
+import 'package:equib/equib_data/equip_data.dart';
+import 'package:equib/equib_data/equip_model_data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../equip_home_page/equip_home_screen.dart';
 
@@ -61,6 +65,7 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
   String noMemebr = '';
   String every = '';
   String priceAmount = '';
+  var uuid = const Uuid();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +74,7 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
         (priceAmount.isEmpty ? 0 : double.parse(priceAmount));
     int endDate = (noMemebr.isEmpty ? 0 : int.parse(noMemebr)) *
         (every.isEmpty ? 0 : int.parse(every));
-
+    final loggedUserID = uuid.v4();
     final year = (endDate / 365).floor();
     final yearLeft = endDate % 365;
 
@@ -338,26 +343,31 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                                 ),
                                 width: 180,
                                 height: 60,
-                                child: year==0 && month==0 && monthLeft == 0 ? const Text('Equip length') :RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: year == 0 ? '' : 'y: $year',
-                                          style: const TextStyle(
-                                              color: Colors.black)),
-                                      TextSpan(
-                                          text: month == 0 ? '' : ' m: $month',
-                                          style: const TextStyle(
-                                              color: Colors.black)),
-                                      TextSpan(
-                                          text: monthLeft == 0
-                                              ? ''
-                                              : ' d: $monthLeft',
-                                          style: const TextStyle(
-                                              color: Colors.black))
-                                    ],
-                                  ),
-                                ),
+                                child: year == 0 && month == 0 && monthLeft == 0
+                                    ? const Text('Equip length')
+                                    : RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                                text:
+                                                    year == 0 ? '' : 'y: $year',
+                                                style: const TextStyle(
+                                                    color: Colors.black)),
+                                            TextSpan(
+                                                text: month == 0
+                                                    ? ''
+                                                    : ' m: $month',
+                                                style: const TextStyle(
+                                                    color: Colors.black)),
+                                            TextSpan(
+                                                text: monthLeft == 0
+                                                    ? ''
+                                                    : ' d: $monthLeft',
+                                                style: const TextStyle(
+                                                    color: Colors.black))
+                                          ],
+                                        ),
+                                      ),
                               ),
                               IconButton(
                                 onPressed: () {},
@@ -409,12 +419,24 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => EquibHomePage(),
-                      ),
+
+                    var newEquip = EquipStarterModel(
+                      recurrence: every,
+                      length: endDate.toString(),
+                      day: startTime,
+                      amount: priceAmount,
+                      member: _members.text,
+                      grandPrize: grandPrice.toString(),
+                      equipId: loggedUserID,
                     );
 
+                    Provider.of<EquipStarterClass>(context, listen: false)
+                        .addEquipStarterList(newEquip);
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (ctx) => const EquibHomePage(),
+                      ),
+                    );
                   }
                 },
                 child: Container(

@@ -119,3 +119,81 @@ class DatabaseTaker {
     await _db.rawDelete("DELETE FROM takerList WHERE member = '$id'");
   }
 }
+
+/*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+* */
+class DatabaseEquipStarter {
+  Future<Database> database() async {
+    return openDatabase(
+      join(await getDatabasesPath(), 'equipStartList.db'),
+      onCreate: (db, version) async {
+        await db.execute(
+          '''CREATE TABLE equipStartList(id INTEGER PRIMARY KEY, length TEXT, recurrence TEXT, member TEXT, amount TEXT,equipId TEXT, grandPrize TEXT, day TEXT)''',
+        );
+      },
+      version: 1,
+    );
+  }
+
+  Future<int> insertTask(EquipStarterModel task) async {
+    Database db = await database();
+    int data = await db.insert('equipStartList', task.toMap());
+    return data;
+  }
+
+  Future<List<EquipStarterModel>> getTasks() async {
+    Database db = await database();
+    var tasks = await db.query('equipStartList');
+    List<EquipStarterModel> tasksList = tasks.isNotEmpty
+        ? tasks.map((e) => EquipStarterModel.fromMap(e)).toList()
+        : [];
+    return tasksList;
+  }
+
+  Future<bool> updateTaskList(EquipStarterModel item) async {
+    final Database db = await database();
+    final rows = await db.update(
+      'equipStartList',
+      item.toMap(),
+      where: 'equipId = ?',
+      whereArgs: [item.equipId],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    return rows > 0;
+  }
+
+  Future<void> deleteTask(String id) async {
+    Database _db = await database();
+    await _db.rawDelete("DELETE FROM equipStartList WHERE equipId = '$id'");
+  }
+}
