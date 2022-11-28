@@ -4,6 +4,7 @@ import 'package:equib/constants.dart';
 import 'package:equib/equib_data/equip_model_data.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +23,7 @@ class Taker extends StatefulWidget {
 
 class _TakerState extends State<Taker> {
   String tossed = '';
-
+final NumberFormat _number =NumberFormat();
   @override
   Widget build(BuildContext context) {
     final newTakerChecker = Provider.of<Takers>(context).takerList;
@@ -316,7 +317,7 @@ class _TakerState extends State<Taker> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            amount,
+            _number.format(double.parse(amount)),
             style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
           ),
         ),
