@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:equib/equib_data/equip_model_data.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import 'equib_data/equip_data.dart';
@@ -86,7 +87,6 @@ class _TakerState extends State<Taker> {
                         int count = 0;
                         if (status == true) {
                           if (readyForTossingMemebrs.isNotEmpty) {
-
                             setState(() {
                               count++;
                               Random random = Random();
@@ -96,6 +96,7 @@ class _TakerState extends State<Taker> {
                               final winner = readyForTossingMemebrs
                                   .where((element) => element.member == tossed)
                                   .toList();
+
                               final task = TakerModel(
                                   day: winner.first.day,
                                   member: winner.first.member,
@@ -109,8 +110,14 @@ class _TakerState extends State<Taker> {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: const Text('እቁብ'),
-                                content: const Text('Congratulation!'),
+                                title: const Center(child: Text('እቁብ')),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Lottie.asset('images/congratulations.json'),
+                                    const Text('Congratulation!'),
+                                  ],
+                                ),
                                 actions: [
                                   TextButton(
                                     onPressed: () {

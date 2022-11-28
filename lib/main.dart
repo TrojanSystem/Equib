@@ -1,5 +1,4 @@
-import 'package:equib/equib_data/equip_daily_collected_database.dart';
-import 'package:equib/equip_home_page/equip_home_screen.dart';
+import 'package:equib/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +37,7 @@ class _EquipState extends State<Equip> {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: EquibHomePage(),
+        home: MyCustomSplashScreen(),
       ),
     );
   }
