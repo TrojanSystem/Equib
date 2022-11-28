@@ -1,10 +1,9 @@
-import 'dart:math';
+
 
 import 'package:equib/equib_data/equip_data.dart';
 import 'package:equib/equip_input/member_registration.dart';
 import 'package:equib/equip_home_page/taker.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -47,11 +46,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
       cashCollected += double.parse(sumDailyCashCollected[cash]);
     }
 
-    String? subjectText = '',
-        startTimeText = '',
-        endTimeText = '',
-        dateText = '',
-        timeDetails = '';
+
 
     return Scaffold(
       appBar: AppBar(
@@ -102,18 +97,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
           if (newMember.isNotEmpty) {
             if (details.targetElement == CalendarElement.appointment ||
                 details.targetElement == CalendarElement.agenda) {
-              final Appointment appointmentDetails = details.appointments![0];
-              subjectText = appointmentDetails.subject;
-              dateText = DateFormat('MMMM dd, yyyy')
-                  .format(appointmentDetails.startTime)
-                  .toString();
-              startTimeText = DateFormat('hh:mm a')
-                  .format(appointmentDetails.startTime)
-                  .toString();
-              endTimeText = DateFormat('hh:mm a')
-                  .format(appointmentDetails.endTime)
-                  .toString();
-              timeDetails = '$startTimeText - $endTimeText';
+
               tappedDate = details.date!;
               showModalBottomSheet(
                   context: context,
@@ -123,16 +107,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
                       ));
             } else if (details.targetElement == CalendarElement.calendarCell) {
               tappedDate = details.date!;
-              subjectText = "You have tapped cell";
-              dateText =
-                  DateFormat('MMMM dd, yyyy').format(details.date!).toString();
-              timeDetails = '';
 
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (ctx) => DailyEquibInput(selectedDate: details.date!),
-              //   ),
-              // );
               showModalBottomSheet(
                 context: context,
                 builder: (context) => DailyEquibInput(
@@ -141,48 +116,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
                 ),
               );
             }
-            // showDialog(
-            //     context: context,
-            //     builder: (BuildContext context) {
-            //       return AlertDialog(
-            //         title: Text('$subjectText'),
-            //         content: SizedBox(
-            //           height: 80,
-            //           child: Column(
-            //             children: <Widget>[
-            //               Row(
-            //                 children: <Widget>[
-            //                   Text(
-            //                     '$dateText',
-            //                     style: const TextStyle(
-            //                       fontWeight: FontWeight.w400,
-            //                       fontSize: 20,
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //               SizedBox(
-            //                 height: 40,
-            //                 child: Row(
-            //                   children: <Widget>[
-            //                     Text(timeDetails!,
-            //                         style: const TextStyle(
-            //                             fontWeight: FontWeight.w400, fontSize: 15)),
-            //                   ],
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //         actions: <Widget>[
-            //           ElevatedButton(
-            //               onPressed: () {
-            //                 Navigator.of(context).pop();
-            //               },
-            //               child: const Text('Close'))
-            //         ],
-            //       );
-            //     });
+
           } else {
             return;
           }
@@ -192,9 +126,6 @@ class _EquibHomePageState extends State<EquibHomePage> {
         todayHighlightColor: Colors.red,
         view: CalendarView.month,
         dataSource: MeetingDataSource(getDataSource),
-        // by default the month appointment display mode set as Indicator, we can
-        // change the display mode as appointment using the appointment display
-        // mode property
         monthViewSettings: const MonthViewSettings(
             appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
       ),
@@ -244,12 +175,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
               memberRegisterID: widget.equipID,
             ),
           );
-          // setState(() {
-          //   Random random = Random();
-          //   // tossed = listName[random.nextInt(listName.length)];
-          //   // taker.add(tossed);
-          //   // listName.remove(tossed);
-          // });
+
         },
         child: const Icon(Icons.add),
       ),

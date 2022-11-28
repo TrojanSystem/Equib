@@ -1,9 +1,6 @@
 import 'package:equib/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
-import '../equib_data/equip_data.dart';
 import 'list_of_daily_collected.dart';
 
 class EquibMembers extends StatelessWidget {

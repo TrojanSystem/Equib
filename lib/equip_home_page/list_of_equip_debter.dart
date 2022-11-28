@@ -13,7 +13,7 @@ class ListOfEquipDebter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _w = MediaQuery.of(context).size.width;
+    double w = MediaQuery.of(context).size.width;
 
     int columnCount = 3;
     final listOfEquipDebter =
@@ -74,10 +74,10 @@ class ListOfEquipDebter extends StatelessWidget {
                       child: FadeInAnimation(
                         child: Container(
                           margin: EdgeInsets.only(
-                              bottom: _w / 30,
-                              left: _w / 60,
-                              right: _w / 60,
-                              top: _w / 60),
+                              bottom: w / 30,
+                              left: w / 60,
+                              right: w / 60,
+                              top: w / 60),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius:

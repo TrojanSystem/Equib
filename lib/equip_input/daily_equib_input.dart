@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import '../equib_data/equip_model_data.dart';
 
 class DailyEquibInput extends StatefulWidget {
-  DailyEquibInput({super.key, required this.selectedDate,required this.dailyInputID});
+ const DailyEquibInput({super.key, required this.selectedDate,required this.dailyInputID});
 
-  DateTime selectedDate;
-String dailyInputID;
+ final DateTime selectedDate;
+  final String dailyInputID;
   @override
   State<DailyEquibInput> createState() => _DailyEquibInputState();
 }
@@ -68,7 +68,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
   }
 
   String dropdownvalue = 'Suke';
-double penalityBirr = 50.0;
+double penaltyBirr = 50.0;
 // List of items in our dropdown menu
 
   @override
@@ -86,8 +86,8 @@ double penalityBirr = 50.0;
         .toList();
 
         dailyPayedMember.sort((a, b) => a.toDay.compareTo(b.toDay));
-//penality Calculation
-  //final penalityInDays = DateTime.parse(dailyPayedMember.last.toDay).difference(widget.selectedDate).inDays;
+//penalty Calculation
+  //final penaltyInDays = DateTime.parse(dailyPayedMember.last.toDay).difference(widget.selectedDate).inDays;
 
     return Scaffold(
       body: SingleChildScrollView(
