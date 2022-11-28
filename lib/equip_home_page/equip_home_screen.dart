@@ -13,8 +13,8 @@ import 'equib_members.dart';
 import 'list_of_daily_collected.dart';
 
 class EquibHomePage extends StatefulWidget {
-  const EquibHomePage({Key? key}) : super(key: key);
-
+   const EquibHomePage({required this.equipID});
+final String equipID;
   @override
   State<EquibHomePage> createState() => _EquibHomePageState();
 }
@@ -194,7 +194,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
                   bottomBarFunction: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => EquibMembers(),
+                        builder: (ctx) => EquibMembers(membersID:widget.equipID),
                       ),
                     );
                   }),
@@ -203,7 +203,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
                   bottomBarFunction: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (ctx) => Taker(),
+                        builder: (ctx) => Taker(takerID:widget.equipID),
                       ),
                     );
                   }),

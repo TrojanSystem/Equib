@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import '../equib_data/equip_model_data.dart';
 
 class DailyEquibInput extends StatefulWidget {
-  DailyEquibInput({super.key, required this.selectedDate});
+  DailyEquibInput({super.key, required this.selectedDate,required this.dailyInputID});
 
   DateTime selectedDate;
-
+String dailyInputID;
   @override
   State<DailyEquibInput> createState() => _DailyEquibInputState();
 }
@@ -281,6 +281,7 @@ double penalityBirr = 50.0;
                           double.parse(equipQuantity);
 
                       var meets = Meeting(
+                        meetingID: widget.dailyInputID,
                         event: dropdownvalue,
                         fromDay: startTime,
                         toDay: dateTime,

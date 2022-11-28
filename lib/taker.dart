@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 import 'equib_data/equip_data.dart';
 
 class Taker extends StatefulWidget {
-  Taker({Key? key}) : super(key: key);
+  Taker({required this.takerID});
+
+  String takerID;
 
   @override
   State<Taker> createState() => _TakerState();
@@ -98,11 +100,13 @@ class _TakerState extends State<Taker> {
                                   .toList();
 
                               final task = TakerModel(
-                                  day: winner.first.day,
-                                  member: winner.first.member,
-                                  amount: winner.first.amount,
-                                  round: count.toString(),
-                                  isWin: true);
+                                day: winner.first.day,
+                                member: winner.first.member,
+                                amount: winner.first.amount,
+                                round: count.toString(),
+                                isWin: true,
+                                takersID: widget.takerID,
+                              );
                               Provider.of<Takers>(context, listen: false)
                                   .updateTakerList(task);
                             });

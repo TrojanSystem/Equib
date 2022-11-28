@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import '../equib_data/equip_data.dart';
 import 'list_of_daily_collected.dart';
 class EquibMembers extends StatelessWidget {
-   EquibMembers({Key? key}) : super(key: key);
+   EquibMembers({required this.membersID});
 
-
+String membersID;
 
 
   @override

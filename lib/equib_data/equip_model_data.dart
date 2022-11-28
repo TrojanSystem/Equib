@@ -8,17 +8,20 @@ class MembersModel {
   String phoneNumber;
   String equibQuantity;
   String price;
+  String memberID;
 
   MembersModel({
     required this.name,
     required this.price,
     required this.phoneNumber,
     required this.equibQuantity,
+    required this.memberID,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
+      'memberID': memberID,
       'price': price,
       'phoneNumber': phoneNumber,
       'equibQuantity': equibQuantity,
@@ -28,6 +31,7 @@ class MembersModel {
   static MembersModel fromMap(Map<String, dynamic> map) {
     return MembersModel(
       name: map['name'],
+      memberID: map['memberID'],
       price: map['price'],
       phoneNumber: map['phoneNumber'],
       equibQuantity: map['equibQuantity'],
@@ -39,12 +43,14 @@ class MembersModel {
 
 class TakerModel {
   String member;
+  String takersID;
   bool isWin;
   String amount;
   String round;
   String day;
 
   TakerModel({
+    required this.takersID,
     required this.day,
     required this.member,
     required this.amount,
@@ -55,6 +61,7 @@ class TakerModel {
   Map<String, dynamic> toMap() {
     return {
       'member': member,
+      'takersID': takersID,
       'isWin': isWin == true ? 1 : 0,
       'amount': amount,
       'day': day,
@@ -65,6 +72,7 @@ class TakerModel {
   static TakerModel fromMap(Map<String, dynamic> map) {
     return TakerModel(
       member: map['member'],
+      takersID: map['takersID'],
       isWin: map['isWin'] == 1 ? true : false,
       amount: map['amount'],
       day: map['day'],
@@ -128,11 +136,13 @@ class Meeting {
     required this.fromDay,
     required this.toDay,
     required this.totalPayed,
+  required this.meetingID,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'event': event,
+      'meetingID': meetingID,
       'fromDay': fromDay,
       'toDay': toDay,
       'totalPayed': totalPayed
@@ -143,13 +153,14 @@ class Meeting {
     return Meeting(
       event: map['event'],
       fromDay: map['fromDay'],
+      meetingID: map['meetingID'],
       toDay: map['toDay'],
       totalPayed: map['totalPayed'],
 
       // checked: map['checked'],
     );
   }
-
+String meetingID;
   String totalPayed;
 
   /// Event name which is equivalent to subject property of [Appointment].
