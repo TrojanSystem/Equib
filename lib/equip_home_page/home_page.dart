@@ -142,7 +142,7 @@ class HomePage extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) => const ListOfEquipDebter(),
+                          builder: (ctx) =>  ListOfEquipDebter(),
                         ),
                       );
                     },
