@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 
 class ListOfDailyPayedMembers extends StatelessWidget {
@@ -20,7 +21,19 @@ class ListOfDailyPayedMembers extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Daily Collected From'),
+        iconTheme: Theme.of(context).iconTheme,
+        backgroundColor: Colors.white,
+        toolbarHeight: 90,
+        elevation: 0,
+        title: Text(
+          'ዛሬ ቀን የሰጡ',
+          style: TextStyle(
+            color: Colors.blue[800],
+            fontWeight: FontWeight.w900,
+            fontSize: 25,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: payedMembersAtSelectedDate.isEmpty
           ? Center(
@@ -60,20 +73,38 @@ class MembersListDetail extends StatelessWidget {
   final int price;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+  Widget build(BuildContext context) { double w = MediaQuery.of(context).size.width;
+
+  int columnCount = 3;
+    return AnimationConfiguration.staggeredGrid(
+      position: 0,
+      duration: const Duration(milliseconds: 500),
+      columnCount: columnCount,
+      child: ScaleAnimation(
+        duration: const Duration(milliseconds: 900),
+        curve: Curves.fastLinearToSlowEaseIn,
+        child: FadeInAnimation(
+          child: Container(
+            margin: EdgeInsets.only(
+                bottom: w / 60, left: w / 30, right: w / 30, top: w / 60),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 40,
+                  spreadRadius: 10,
+                ),
+              ],
+            ),
+            child: Container(
+
       height: 100,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 40,
-            spreadRadius: 10,
-          ),
-        ],
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -154,6 +185,9 @@ class MembersListDetail extends StatelessWidget {
           ),
         ],
       ),
+    ),   ),
+    ),
+    ),
     );
   }
 }
@@ -173,141 +207,166 @@ class CollectedFrom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+
+    int columnCount = 3;
     final dayDifference =
         DateTime.parse(to).difference(DateTime.parse(from)).inDays;
     final total = (dayDifference + 1).toString();
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      height: 100,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 40,
-            spreadRadius: 10,
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Expanded(
-            flex: 2,
+    return AnimationConfiguration.staggeredGrid(
+      position: 0,
+      duration: const Duration(milliseconds: 500),
+      columnCount: columnCount,
+      child: ScaleAnimation(
+        duration: const Duration(milliseconds: 900),
+        curve: Curves.fastLinearToSlowEaseIn,
+        child: FadeInAnimation(
+          child: Container(
+            margin: EdgeInsets.only(
+                bottom: w / 60, left: w / 30, right: w / 30, top: w / 60),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 40,
+                  spreadRadius: 10,
+                ),
+              ],
+            ),
             child: Container(
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(10),
+
+              height: 100,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    totalPayed.toString(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 18,
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            totalPayed.toString(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            'ETB',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  const Text(
-                    'ETB',
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      child: ListTile(
+                        title: Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Text(
+                            eventName,
+                          ),
+                        ),
+                        subtitle: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RichText(
+                              text: TextSpan(children: [
+                                const TextSpan(
+                                  text: 'From: ',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: DateFormat.yMMMEd().format(
+                                    DateTime.parse(
+                                      from.toString(),
+                                    ),
+                                  ),
+                                  style: const TextStyle(color: Colors.black54),
+                                ),
+                              ]),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            RichText(
+                              text: TextSpan(children: [
+                                const TextSpan(
+                                  text: 'To: ',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: DateFormat.yMMMEd().format(
+                                    DateTime.parse(
+                                      to.toString(),
+                                    ),
+                                  ),
+                                  style: const TextStyle(color: Colors.black54),
+                                ),
+                              ]),
+                            ),
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'X',
+                              style: TextStyle(
+                                color: Colors.green[800],
+                                fontFamily: 'FjallaOne',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            Text(
+                              total,
+                              style: TextStyle(
+                                color: Colors.green[800],
+                                fontFamily: 'FjallaOne',
+                                fontSize: 25,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          Expanded(
-            flex: 4,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              child: ListTile(
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: Text(
-                    eventName,
-                  ),
-                ),
-                subtitle: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(children: [
-                        const TextSpan(
-                          text: 'From: ',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(
-                          text: DateFormat.yMMMEd().format(
-                            DateTime.parse(
-                              from.toString(),
-                            ),
-                          ),
-                          style: const TextStyle(color: Colors.black54),
-                        ),
-                      ]),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    RichText(
-                      text: TextSpan(children: [
-                        const TextSpan(
-                          text: 'To: ',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(
-                          text: DateFormat.yMMMEd().format(
-                            DateTime.parse(
-                              to.toString(),
-                            ),
-                          ),
-                          style: const TextStyle(color: Colors.black54),
-                        ),
-                      ]),
-                    ),
-                  ],
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'X',
-                      style: TextStyle(
-                        color: Colors.green[800],
-                        fontFamily: 'FjallaOne',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    Text(
-                      total,
-                      style: TextStyle(
-                        color: Colors.green[800],
-                        fontFamily: 'FjallaOne',
-                        fontSize: 25,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

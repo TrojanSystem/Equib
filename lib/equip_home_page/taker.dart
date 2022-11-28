@@ -96,7 +96,7 @@ class _TakerState extends State<Taker> {
                               Provider.of<Takers>(context, listen: false)
                                   .changeRound(round);
                             });
-                          } else if (readyForTossingMemebrs.isEmpty &&
+                          } else if (
                               newTaker.isEmpty) {
                             return;
                           } else {

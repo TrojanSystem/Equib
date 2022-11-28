@@ -245,7 +245,7 @@ class ListOfEquipDebter extends StatelessWidget {
                     ),
                   ),
                 );
-              }),
+              },),
     );
   }
 }
