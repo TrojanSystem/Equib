@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
                         text: const TextSpan(
                           children: [
                             TextSpan(
-                              text: 'How to create Your own',
+                              text: 'Want to create Your own',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w900,
