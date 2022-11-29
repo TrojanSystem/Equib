@@ -161,20 +161,20 @@ final NumberFormat _collectedCash = NumberFormat();
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'X',
-                      style: TextStyle(
-                        color: Colors.green[800],
-                        fontFamily: 'FjallaOne',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    Text(
                       equibQuantity.toString(),
                       style: TextStyle(
                         color: Colors.green[800],
                         fontFamily: 'FjallaOne',
                         fontSize: 25,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Text(
+                      ' እጣ',
+                      style: TextStyle(
+                        color: Colors.green[800],
+                        fontFamily: 'FjallaOne',
+                        fontSize: 16,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
