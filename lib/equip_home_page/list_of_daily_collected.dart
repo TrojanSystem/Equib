@@ -74,7 +74,7 @@ class MembersListDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) { double w = MediaQuery.of(context).size.width;
-
+final NumberFormat _collectedCash = NumberFormat();
   int columnCount = 3;
     return AnimationConfiguration.staggeredGrid(
       position: 0,
@@ -120,7 +120,7 @@ class MembersListDetail extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    price.toString(),
+                    _collectedCash.format(price),
                     style: const TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 18,
@@ -193,7 +193,7 @@ class MembersListDetail extends StatelessWidget {
 }
 
 class CollectedFrom extends StatelessWidget {
-  const CollectedFrom(
+   CollectedFrom(
       {super.key,
       required this.from,
       required this.totalPayed,
@@ -204,7 +204,7 @@ class CollectedFrom extends StatelessWidget {
   final String eventName;
   final String to;
   final String totalPayed;
-
+  final NumberFormat _collectedCash = NumberFormat();
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -258,7 +258,7 @@ class CollectedFrom extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            totalPayed.toString(),
+                            _collectedCash.format(double.parse(totalPayed)),
                             style: const TextStyle(
                               fontWeight: FontWeight.w900,
                               fontSize: 18,
