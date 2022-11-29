@@ -123,7 +123,7 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                       onEditingComplete: () =>
-                          FocusScope.of(context).requestFocus(_winAmountFocus),
+                          FocusScope.of(context).requestFocus(_equipPriceNode),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Members can\'t be empty';
