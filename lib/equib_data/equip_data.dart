@@ -467,3 +467,56 @@ class MeetingDataSource extends CalendarDataSource {
     return meetingData;
   }
 }
+/*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+* */
+class CollectorDataSource extends CalendarDataSource {
+  /// Creates a meeting data source, which used to set the appointment
+  /// collection to the calendar
+  CollectorDataSource(List<Meeting> source) {
+    appointments = source;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return DateTime.parse(_getMeetingData(index).fromDay);
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return DateTime.parse(_getMeetingData(index).toDay);
+  }
+
+  @override
+  String getSubject(int index) {
+    return _getMeetingData(index).event;
+  }
+
+  @override
+  Color getColor(int index) {
+    return Colors.blue;
+  }
+
+  @override
+  bool isAllDay(int index) {
+    return false;
+  }
+
+  Meeting _getMeetingData(int index) {
+    final dynamic meeting = appointments![index];
+    late final Meeting meetingData;
+    if (meeting is Meeting) {
+      meetingData = meeting;
+    }
+
+    return meetingData;
+  }
+}

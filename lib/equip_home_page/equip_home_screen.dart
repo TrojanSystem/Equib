@@ -139,8 +139,9 @@ class _EquibHomePageState extends State<EquibHomePage> {
               final snackBar = SnackBar(
                 elevation: 10,
                 content: Text(
-                  getDataSource.isEmpty ?
-                  'እቁቡ ሚጀምረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።':'እቁቡ የጀመረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።',
+                  getDataSource.isEmpty
+                      ? 'እቁቡ ሚጀምረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።'
+                      : 'እቁቡ የጀመረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።',
                   style: boldStyle,
                 ),
                 backgroundColor: (Colors.white),
