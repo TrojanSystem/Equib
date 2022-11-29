@@ -45,13 +45,16 @@ dependencies:
   provider: ^6.0.4
   path_provider: ^2.0.11
   lottie: ^2.0.0
-  flutter_staggered_animations: ^1.0.0
+  flutter_staggered_animations: ^1.1.1
   animated_text_kit: ^4.2.2
   uuid: ^3.0.7
+
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

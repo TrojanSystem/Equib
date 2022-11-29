@@ -37,6 +37,12 @@ class _EquibHomePageState extends State<EquibHomePage> {
     final newMember = newMemebrChecker
         .where((element) => element.memberID == widget.equipID)
         .toList();
+    int sumOfTotEquip = 0;
+    List<String> totEquip = newMember.map((e) => e.equibQuantity).toList();
+    for (int equip = 0; equip < totEquip.length; equip++) {
+      sumOfTotEquip += int.parse(totEquip[equip]);
+    }
+
     List<String> listMember = newMember.map((e) => e.name).toList();
     final newGetDataSource =
         Provider.of<EquipDailyCollected>(context).dailyCollectedList;
@@ -51,7 +57,6 @@ class _EquibHomePageState extends State<EquibHomePage> {
       cashCollected += double.parse(sumDailyCashCollected[cash]);
     }
 
-
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -62,7 +67,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Total Members: ${newMember.length}',
+                  'Total Members: $sumOfTotEquip',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -134,7 +139,8 @@ class _EquibHomePageState extends State<EquibHomePage> {
               final snackBar = SnackBar(
                 elevation: 10,
                 content: Text(
-                  'እቁቡ ሚጀምረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።',
+                  getDataSource.isEmpty ?
+                  'እቁቡ ሚጀምረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።':'እቁቡ የጀመረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።',
                   style: boldStyle,
                 ),
                 backgroundColor: (Colors.white),

@@ -7,7 +7,10 @@ const sloganStyle = TextStyle(
   letterSpacing: 1,
   fontWeight: FontWeight.w900,
 );
-
+const dropDownStyle = TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.w900,
+);
 const emptyStyle = TextStyle(
   fontFamily: 'FjallaOne',
   fontSize: 15,
