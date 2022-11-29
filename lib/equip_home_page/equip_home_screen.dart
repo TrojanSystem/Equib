@@ -59,6 +59,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(26, 35, 126, 1),
         actions: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +68,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Total Members: $sumOfTotEquip',
+                  'አጠቃላይ እጣ: $sumOfTotEquip',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -77,7 +78,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 0, 8, 8),
                 child: Text(
-                  'Cash Collected: ${_number.format(cashCollected)}',
+                  'የተሰበሰበ ብር: ${_number.format(cashCollected)}',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,

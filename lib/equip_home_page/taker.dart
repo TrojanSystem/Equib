@@ -324,7 +324,7 @@ final NumberFormat _number =NumberFormat();
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            status ? 'Round #$round' : '',
+            status ? '$round ኛ ዙር እጣ' : '',
             style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
           ),
         ),
