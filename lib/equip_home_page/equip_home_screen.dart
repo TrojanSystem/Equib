@@ -50,7 +50,7 @@ class _EquibHomePageState extends State<EquibHomePage> {
     for (int cash = 0; cash < sumDailyCashCollected.length; cash++) {
       cashCollected += double.parse(sumDailyCashCollected[cash]);
     }
-    print('equip started at ${DateTime.parse(widget.equipStartDate)}');
+
 
     return Scaffold(
       appBar: AppBar(
