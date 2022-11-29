@@ -435,7 +435,10 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                         .addEquipStarterList(newEquip);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (ctx) => EquibHomePage(equipID: loggedUserID),
+                        builder: (ctx) => EquibHomePage(
+                          equipID: loggedUserID,
+                          equipStartDate: startTime,
+                        ),
                       ),
                     );
                   }

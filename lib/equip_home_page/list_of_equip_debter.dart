@@ -60,6 +60,7 @@ class ListOfEquipDebter extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (ctx) => EquibHomePage(
                           equipID: listOfEquipDebter[index].equipId,
+                          equipStartDate:listOfEquipDebter[index].day
                         ),
                       ),
                     );

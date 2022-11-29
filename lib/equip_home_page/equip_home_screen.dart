@@ -1,3 +1,4 @@
+import 'package:equib/constants.dart';
 import 'package:equib/equib_data/equip_data.dart';
 import 'package:equib/equip_input/member_registration.dart';
 import 'package:equib/equip_home_page/taker.dart';
@@ -11,9 +12,11 @@ import 'equib_members.dart';
 import 'list_of_daily_collected.dart';
 
 class EquibHomePage extends StatefulWidget {
-  const EquibHomePage({super.key, required this.equipID});
+  const EquibHomePage(
+      {super.key, required this.equipID, required this.equipStartDate});
 
   final String equipID;
+  final String equipStartDate;
 
   @override
   State<EquibHomePage> createState() => _EquibHomePageState();
@@ -21,7 +24,9 @@ class EquibHomePage extends StatefulWidget {
 
 class _EquibHomePageState extends State<EquibHomePage> {
   DateTime tappedDate = DateTime.now();
-final NumberFormat _number = NumberFormat();
+
+  final NumberFormat _number = NumberFormat();
+
   @override
   Widget build(BuildContext context) {
     final newTakerChecker = Provider.of<Takers>(context).takerList;
@@ -45,6 +50,7 @@ final NumberFormat _number = NumberFormat();
     for (int cash = 0; cash < sumDailyCashCollected.length; cash++) {
       cashCollected += double.parse(sumDailyCashCollected[cash]);
     }
+    print('equip started at ${DateTime.parse(widget.equipStartDate)}');
 
     return Scaffold(
       appBar: AppBar(
@@ -93,30 +99,52 @@ final NumberFormat _number = NumberFormat();
         },
         onTap: (details) {
           if (newMember.isNotEmpty) {
-            if (details.targetElement == CalendarElement.appointment ||
-                details.targetElement == CalendarElement.agenda) {
-              tappedDate = details.date!;
-              showModalBottomSheet(
+            if ((details.date)!
+                    .isAfter(DateTime.parse(widget.equipStartDate)) ||
+                (details.date)!
+                        .difference(DateTime.parse(widget.equipStartDate))
+                        .inDays ==
+                    0) {
+              if (details.targetElement == CalendarElement.appointment ||
+                  details.targetElement == CalendarElement.agenda) {
+                tappedDate = details.date!;
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) => DailyEquibInput(
+                          selectedDate: details.date!,
+                          dailyInputID: widget.equipID,
+                          dropValue: listMember.first,
+                        ));
+              } else if (details.targetElement ==
+                  CalendarElement.calendarCell) {
+                tappedDate = details.date!;
+
+                showModalBottomSheet(
                   context: context,
                   builder: (context) => DailyEquibInput(
-                        selectedDate: details.date!,
-                        dailyInputID: widget.equipID,
-                        dropValue: listMember.first,
-                      ));
-            } else if (details.targetElement == CalendarElement.calendarCell) {
-              tappedDate = details.date!;
-
-              showModalBottomSheet(
-                context: context,
-                builder: (context) => DailyEquibInput(
-                  selectedDate: details.date!,
-                  dailyInputID: widget.equipID,
-                  dropValue: listMember.first,
+                    selectedDate: details.date!,
+                    dailyInputID: widget.equipID,
+                    dropValue: listMember.first,
+                  ),
+                );
+              } else {
+                return;
+              }
+            } else {
+              final snackBar = SnackBar(
+                elevation: 10,
+                content: Text(
+                  'እቁቡ ሚጀምረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።',
+                  style: boldStyle,
+                ),
+                backgroundColor: (Colors.white),
+                action: SnackBarAction(
+                  label: 'dismiss',
+                  onPressed: () {},
                 ),
               );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
-          } else {
-            return;
           }
         },
         showNavigationArrow: true,
