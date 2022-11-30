@@ -300,6 +300,8 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                               : double.parse(equipQuantity));
 
                       var meets = Meeting(
+
+                        isAllDay: false,
                         meetingID: widget.dailyInputID,
                         event: dropdownvalue,
                         fromDay: startTime,

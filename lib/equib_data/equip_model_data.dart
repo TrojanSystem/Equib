@@ -1,6 +1,4 @@
-import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class MembersModel {
@@ -132,19 +130,23 @@ class EquipStarterModel {
 class Meeting {
   /// Creates a meeting class with required details.
   Meeting({
+    required this.isAllDay,
     required this.event,
+
     required this.fromDay,
     required this.toDay,
     required this.totalPayed,
-  required this.meetingID,
+    required this.meetingID,
   });
 
   Map<String, dynamic> toMap() {
     return {
+
       'event': event,
       'meetingID': meetingID,
       'fromDay': fromDay,
       'toDay': toDay,
+      'isAllDay': isAllDay == true ? 1 : 0,
       'totalPayed': totalPayed
     };
   }
@@ -152,6 +154,8 @@ class Meeting {
   static Meeting fromMap(Map<String, dynamic> map) {
     return Meeting(
       event: map['event'],
+
+      isAllDay: map['isAllDay'] == 1 ? true : false,
       fromDay: map['fromDay'],
       meetingID: map['meetingID'],
       toDay: map['toDay'],
@@ -160,8 +164,10 @@ class Meeting {
       // checked: map['checked'],
     );
   }
-String meetingID;
+
+  String meetingID;
   String totalPayed;
+
 
   /// Event name which is equivalent to subject property of [Appointment].
   String event;
@@ -175,8 +181,55 @@ String meetingID;
   /// Background which is equivalent to color property of [Appointment].
 // Color background;
 //
-// /// IsAllDay which is equivalent to isAllDay property of [Appointment].
-// bool isAllDay;
+  /// IsAllDay which is equivalent to isAllDay property of [Appointment].
+  bool isAllDay;
+}
+
+class AdminAppointment {
+  /// Creates a meeting class with required details.
+  AdminAppointment({
+    required this.isAllDay,
+    required this.meetingID,
+    required this.event,
+    required this.fromDay,
+    required this.toDay,
+    required this.totalPayed,
+    required this.recurrenceRule,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'recurrenceRule': recurrenceRule,
+      'event': event,
+      'meetingID': meetingID,
+      'fromDay': fromDay,
+      'toDay': toDay,
+      'isAllDay': isAllDay == true ? 1 : 0,
+      'totalPayed': totalPayed
+    };
+  }
+
+  static AdminAppointment fromMap(Map<String, dynamic> map) {
+    return AdminAppointment(
+      event: map['event'],
+      recurrenceRule: map['recurrenceRule'],
+      isAllDay: map['isAllDay'] == 1 ? true : false,
+      fromDay: map['fromDay'],
+      meetingID: map['meetingID'],
+      toDay: map['toDay'],
+      totalPayed: map['totalPayed'],
+
+      // checked: map['checked'],
+    );
+  }
+
+  bool isAllDay;
+  String meetingID;
+  String event;
+  String fromDay;
+  String toDay;
+  String totalPayed;
+  String recurrenceRule;
 }
 
 class EquibModel {

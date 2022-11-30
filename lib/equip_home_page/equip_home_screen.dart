@@ -7,16 +7,24 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../equib_data/equip_model_data.dart';
 import '../equip_input/daily_equib_input.dart';
 import 'equib_members.dart';
 import 'list_of_daily_collected.dart';
 
 class EquibHomePage extends StatefulWidget {
-  const EquibHomePage(
-      {super.key, required this.equipID, required this.equipStartDate});
+  const EquibHomePage({
+    super.key,
+    required this.equipID,
+    required this.equipStartDate,
+    required this.equipEndDate,
+    required this.equipRecurrence,
+  });
 
   final String equipID;
   final String equipStartDate;
+  final String equipRecurrence;
+  final String equipEndDate;
 
   @override
   State<EquibHomePage> createState() => _EquibHomePageState();
@@ -26,6 +34,8 @@ class _EquibHomePageState extends State<EquibHomePage> {
   DateTime tappedDate = DateTime.now();
 
   final NumberFormat _number = NumberFormat();
+
+
 
   @override
   Widget build(BuildContext context) {

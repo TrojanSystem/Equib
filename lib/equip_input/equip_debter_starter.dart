@@ -430,12 +430,16 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                       grandPrize: grandPrice.toString(),
                       equipId: loggedUserID,
                     );
+                    final equipStartedAt =startTime;
 
                     Provider.of<EquipStarterClass>(context, listen: false)
                         .addEquipStarterList(newEquip);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (ctx) => EquibHomePage(
+                          equipEndDate:( DateTime.parse(equipStartedAt).add(
+                            Duration(days: endDate),)).toString(),
+                          equipRecurrence: every,
                           equipID: loggedUserID,
                           equipStartDate: startTime,
                         ),

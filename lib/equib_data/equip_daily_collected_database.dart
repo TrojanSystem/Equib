@@ -8,7 +8,7 @@ class DailyEquipCollectedDatabase {
       join(await getDatabasesPath(), 'dailyEquibCollected.db'),
       onCreate: (db, version) async {
         await db.execute(
-          '''CREATE TABLE dailyEquibCollected(id INTEGER PRIMARY KEY, event TEXT,meetingID TEXT,totalPayed TEXT, price TEXT, fromDay TEXT, toDay TEXT)''',
+          '''CREATE TABLE dailyEquibCollected(id INTEGER PRIMARY KEY,isAllDay int,event TEXT,meetingID TEXT,totalPayed TEXT, price TEXT, fromDay TEXT, toDay TEXT)''',
         );
       },
       version: 1,
