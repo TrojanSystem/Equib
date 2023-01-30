@@ -1,8 +1,10 @@
 import 'package:equib/equib_data/equip_data.dart';
 import 'package:equib/equib_data/equip_model_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:uuid/uuid.dart';
 
 import '../equip_home_page/equip_home_screen.dart';
@@ -37,9 +39,14 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      lastDate: DateTime(DateTime.now().year + 1),
-      firstDate: DateTime(DateTime.now().month + 1),
-    ).then((value) => setState(() {
+      lastDate: DateTime(DateTime
+          .now()
+          .year + 1),
+      firstDate: DateTime(DateTime
+          .now()
+          .month + 1),
+    ).then((value) =>
+        setState(() {
           if (value != null) {
             startTime = value.toString();
           } else {
@@ -83,7 +90,9 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: Theme.of(context).iconTheme,
+        iconTheme: Theme
+            .of(context)
+            .iconTheme,
         backgroundColor: Colors.white,
         toolbarHeight: 90,
         elevation: 0,
@@ -179,8 +188,9 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                             focusNode: _equipPriceNode,
                             keyboardType: TextInputType.number,
                             textInputAction: TextInputAction.next,
-                            onEditingComplete: () => FocusScope.of(context)
-                                .requestFocus(_winAmountFocus),
+                            onEditingComplete: () =>
+                                FocusScope.of(context)
+                                    .requestFocus(_winAmountFocus),
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Price can\'t be empty';
@@ -300,7 +310,8 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                                 ),
                                 height: 60,
                                 child: Text(
-                                  ' ${DateFormat.yMEd().format(DateTime.parse(startTime))}',
+                                  ' ${DateFormat.yMEd().format(
+                                      DateTime.parse(startTime))}',
                                 ),
                               ),
                               IconButton(
@@ -347,28 +358,28 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                                 child: year == 0 && month == 0 && monthLeft == 0
                                     ? const Text('Equip length')
                                     : RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            TextSpan(
-                                                text:
-                                                    year == 0 ? '' : 'y: $year',
-                                                style: const TextStyle(
-                                                    color: Colors.black)),
-                                            TextSpan(
-                                                text: month == 0
-                                                    ? ''
-                                                    : ' m: $month',
-                                                style: const TextStyle(
-                                                    color: Colors.black)),
-                                            TextSpan(
-                                                text: monthLeft == 0
-                                                    ? ''
-                                                    : ' d: $monthLeft',
-                                                style: const TextStyle(
-                                                    color: Colors.black))
-                                          ],
-                                        ),
-                                      ),
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text:
+                                          year == 0 ? '' : 'y: $year',
+                                          style: const TextStyle(
+                                              color: Colors.black)),
+                                      TextSpan(
+                                          text: month == 0
+                                              ? ''
+                                              : ' m: $month',
+                                          style: const TextStyle(
+                                              color: Colors.black)),
+                                      TextSpan(
+                                          text: monthLeft == 0
+                                              ? ''
+                                              : ' d: $monthLeft',
+                                          style: const TextStyle(
+                                              color: Colors.black))
+                                    ],
+                                  ),
+                                ),
                               ),
                               IconButton(
                                 onPressed: () {},
@@ -418,6 +429,7 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
               ),
               GestureDetector(
                 onTap: () {
+
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
 
@@ -430,19 +442,21 @@ class _EquipDebterStarterState extends State<EquipDebterStarter> {
                       grandPrize: grandPrice.toString(),
                       equipId: loggedUserID,
                     );
-                    final equipStartedAt =startTime;
+                    final equipStartedAt = startTime;
 
                     Provider.of<EquipStarterClass>(context, listen: false)
                         .addEquipStarterList(newEquip);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (ctx) => EquibHomePage(
-                          equipEndDate:( DateTime.parse(equipStartedAt).add(
-                            Duration(days: endDate),)).toString(),
-                          equipRecurrence: every,
-                          equipID: loggedUserID,
-                          equipStartDate: startTime,
-                        ),
+                        builder: (ctx) =>
+                            EquibHomePage(
+                              equipEndDate: (DateTime.parse(equipStartedAt).add(
+                                Duration(days: endDate),
+                              )).toString(),
+                              equipRecurrence: every,
+                              equipID: loggedUserID,
+                              equipStartDate: startTime,
+                            ),
                       ),
                     );
                   }

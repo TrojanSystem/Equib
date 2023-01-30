@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
+import '../calendar.dart';
+import '../daily_collected_heat_map.dart';
 import '../equib_data/equip_model_data.dart';
 import '../equip_input/daily_equib_input.dart';
 import 'equib_members.dart';
@@ -35,8 +36,6 @@ class _EquibHomePageState extends State<EquibHomePage> {
 
   final NumberFormat _number = NumberFormat();
 
-
-
   @override
   Widget build(BuildContext context) {
     final newTakerChecker = Provider.of<Takers>(context).takerList;
@@ -62,13 +61,47 @@ class _EquibHomePageState extends State<EquibHomePage> {
 
     final sumDailyCashCollected =
         getDataSource.map((e) => e.totalPayed).toList();
+
     double cashCollected = 0.0;
     for (int cash = 0; cash < sumDailyCashCollected.length; cash++) {
       cashCollected += double.parse(sumDailyCashCollected[cash]);
     }
+    final data = Provider.of<EquibData>(context).dataSource;
+    final equip = getDataSource
+        .map(
+          (e) => Appointment(
+            id: e.meetingID,
+            startTime: DateTime.parse(e.fromDay),
+            endTime: DateTime.parse(e.toDay),
+            subject: e.event,
+            color: Colors.grey,
+          ),
+        )
+        .toList();
+    final List<Appointment> appoint = <Appointment>[];
+    final equipDebter = Appointment(
+      id: widget.equipID,
+      startTime: DateTime.parse(widget.equipStartDate),
+      endTime: DateTime.parse(widget.equipStartDate),
+      subject: 'እጣ',
+      recurrenceRule:
+          'FREQ=DAILY;INTERVAL=${widget.equipRecurrence};UNTIL=${widget.equipEndDate}',
+      color: Colors.green,
+    );
+
+    appoint.add(equipDebter);
+    data.appointments!.addAll(appoint);
+    data.appointments!.addAll(equip);
 
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+            color: Colors.black, // <-- SEE HERE
+
+            onPressed: () {
+              Navigator.of(context).pop();
+              data.appointments!.clear();
+            }),
         backgroundColor: const Color.fromRGBO(26, 35, 126, 1),
         actions: [
           Column(
@@ -101,77 +134,114 @@ class _EquibHomePageState extends State<EquibHomePage> {
         toolbarHeight: 90,
         elevation: 0,
       ),
-      body: SfCalendar(
-        showWeekNumber: true,
-        cellEndPadding: 5,
-        firstDayOfWeek: 1,
-        onLongPress: (val) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (ctx) => ListOfDailyPayedMembers(
-                  collected: getDataSource, tappedDate: val.date),
-            ),
+      body: RefreshIndicator(
+        color: Colors.blue,
+        onRefresh: () {
+          return Future.delayed(
+            const Duration(microseconds: 500),
+            () {
+              /// adding elements in list after [1 seconds] delay
+              /// to mimic network call
+              ///
+              /// Remember: setState is necessary so that
+              /// build method will run again otherwise
+              /// list will not show all elements
+              setState(() {
+                getDataSource.length;
+              });
+
+              const snack = SnackBar(
+                content: Text('Page Refreshed'),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snack);
+            },
           );
         },
-        onTap: (details) {
-          if (newMember.isNotEmpty) {
-            if ((details.date)!
-                    .isAfter(DateTime.parse(widget.equipStartDate)) ||
-                (details.date)!
-                        .difference(DateTime.parse(widget.equipStartDate))
-                        .inDays ==
-                    0) {
-              if (details.targetElement == CalendarElement.appointment ||
-                  details.targetElement == CalendarElement.agenda) {
-                tappedDate = details.date!;
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) => DailyEquibInput(
-                          selectedDate: details.date!,
-                          dailyInputID: widget.equipID,
-                          dropValue: listMember.first,
-                        ));
-              } else if (details.targetElement ==
-                  CalendarElement.calendarCell) {
-                tappedDate = details.date!;
+        child: ListView(
+          children: [
+            Container(
+              margin: EdgeInsets.all(8),
+                            height: 550,
+              child: SfCalendar(
+                showWeekNumber: true,
+                cellEndPadding: 5,
+                firstDayOfWeek: 1,
+                onLongPress: (val) {
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (ctx) => ListOfDailyPayedMembers(
+                  //         collected: getDataSource, tappedDate: val.date),
+                  //   ),
+                  // );
+                  showHeatMap(context);
+                },
+                onTap: (details) {
+                  if (newMember.isNotEmpty) {
+                    if ((details.date)!
+                            .isAfter(DateTime.parse(widget.equipStartDate)) ||
+                        (details.date)!
+                                .difference(
+                                    DateTime.parse(widget.equipStartDate))
+                                .inDays ==
+                            0) {
+                      if (details.targetElement ==
+                              CalendarElement.appointment ||
+                          details.targetElement == CalendarElement.agenda) {
+                        tappedDate = details.date!;
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) => DailyEquibInput(
+                                  selectedDate: details.date!,
+                                  dailyInputID: widget.equipID,
+                                  dropValue: listMember.first,
+                                ));
+                      } else if (details.targetElement ==
+                          CalendarElement.calendarCell) {
+                        tappedDate = details.date!;
 
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) => DailyEquibInput(
-                    selectedDate: details.date!,
-                    dailyInputID: widget.equipID,
-                    dropValue: listMember.first,
-                  ),
-                );
-              } else {
-                return;
-              }
-            } else {
-              final snackBar = SnackBar(
-                elevation: 10,
-                content: Text(
-                  getDataSource.isEmpty
-                      ? 'እቁቡ ሚጀምረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።'
-                      : 'እቁቡ የጀመረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።',
-                  style: boldStyle,
-                ),
-                backgroundColor: (Colors.white),
-                action: SnackBarAction(
-                  label: 'dismiss',
-                  onPressed: () {},
-                ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }
-          }
-        },
-        showNavigationArrow: true,
-        cellBorderColor: Colors.white,
-        todayHighlightColor: Colors.red,
-        view: CalendarView.month,
-        dataSource: MeetingDataSource(getDataSource),
-        monthViewSettings: const MonthViewSettings(
-            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => DailyEquibInput(
+                            selectedDate: details.date!,
+                            dailyInputID: widget.equipID,
+                            dropValue: listMember.first,
+                          ),
+                        );
+                      } else {
+                        return;
+                      }
+                    } else {
+                      final snackBar = SnackBar(
+                        elevation: 10,
+                        content: Text(
+                          getDataSource.isEmpty
+                              ? 'እቁቡ ሚጀምረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።'
+                              : 'እቁቡ የጀመረው በ ${DateTime.parse(widget.equipStartDate).day}/${DateTime.parse(widget.equipStartDate).month} /${DateTime.parse(widget.equipStartDate).year} ነው።',
+                          style: boldStyle,
+                        ),
+                        backgroundColor: (Colors.white),
+                        action: SnackBarAction(
+                          label: 'dismiss',
+                          onPressed: () {},
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  }
+                },
+                showNavigationArrow: true,
+                cellBorderColor: Colors.white,
+                todayHighlightColor: Colors.red,
+                view: CalendarView.month,
+                showDatePickerButton: true,
+                dataSource: data,
+                monthViewSettings: const MonthViewSettings(
+                    appointmentDisplayMode:
+                        MonthAppointmentDisplayMode.appointment),
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         color: const Color.fromRGBO(40, 53, 147, 1),

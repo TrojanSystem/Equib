@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../calendar.dart';
 import 'equip_daily_collected_database.dart';
 import 'equip_model_data.dart';
 import 'equip_database.dart';
 
 class EquibData extends ChangeNotifier {
   DatabaseExpense db = DatabaseExpense();
+  final DataSource _dataSource = DataSource(<Appointment>[]);
 
+  DataSource get dataSource => _dataSource;
   bool isIncome = false;
 
   bool _isLoading = true;
@@ -239,6 +243,7 @@ class EquibData extends ChangeNotifier {
     },
   ];
 }
+
 /*
 *
 *
@@ -311,6 +316,8 @@ class EquipStarterClass extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+
+
   Future loadEquipStarterList() async {
     _isLoading = true;
     notifyListeners();
@@ -351,8 +358,6 @@ class EquipStarterClass extends ChangeNotifier {
 *
 * */
 
-
-
 class Takers extends ChangeNotifier {
   int equipRound = 1;
   DatabaseTaker takerDb = DatabaseTaker();
@@ -362,10 +367,12 @@ class Takers extends ChangeNotifier {
   List<TakerModel> get takerList => _takerList;
 
   bool get isLoading => _isLoading;
-changeRound(int count){
-  equipRound = equipRound+1;
-  notifyListeners();
-}
+
+  changeRound(int count) {
+    equipRound = equipRound + 1;
+    notifyListeners();
+  }
+
   Future loadTakerList() async {
     _isLoading = true;
     notifyListeners();
@@ -392,15 +399,6 @@ changeRound(int count){
     notifyListeners();
   }
 }
-
-
-
-
-
-
-
-
-
 
 /*
 
@@ -478,4 +476,3 @@ class MeetingDataSource extends CalendarDataSource {
 *
 *
 * */
-

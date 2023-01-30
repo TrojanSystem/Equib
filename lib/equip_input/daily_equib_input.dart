@@ -2,6 +2,7 @@ import 'package:equib/equib_data/equip_data.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../equib_data/equip_model_data.dart';
 
@@ -84,7 +85,9 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
     final newMember = newMemebrChecker
         .where((element) => element.memberID == widget.dailyInputID)
         .toList();
-
+    final calenderData =
+        Provider.of<EquibData>(context, listen: false)
+            .dataSource;
     final dailyCollectedChecker =
         Provider.of<EquipDailyCollected>(context).dailyCollectedList;
     final dailyCollected = dailyCollectedChecker
@@ -290,6 +293,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                       final dayDiffrence = DateTime.parse(dateTime)
                           .difference(DateTime.parse(startTime))
                           .inDays;
+
                       final day = (dayDiffrence + 1).toString();
                       double dailyPayedAmount = double.parse(day) *
                           (priceAmount.isEmpty
@@ -309,6 +313,7 @@ class _DailyEquibInputState extends State<DailyEquibInput> {
                         totalPayed: dailyPayedAmount.toStringAsFixed(2),
                         //'',
                       );
+
 
                       Provider.of<EquipDailyCollected>(context, listen: false)
                           .addDailyCollectedList(meets);
